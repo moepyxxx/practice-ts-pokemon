@@ -1,4 +1,4 @@
-import { basicStatus, IMove } from '../utils/interface.general';
+import { basicStatus, IMove, IBattleStatusRank } from '../utils/interface.general';
 import { randomMultipleInArray } from '../utils/functions';
 import { Group } from './Group';
 
@@ -35,7 +35,7 @@ export abstract class Pokemon {
     rapidity: 0
   }
 
-  protected _battleStatusRank = {
+  protected _battleStatusRank: IBattleStatusRank = {
     attack: 0,
     protected: 0,
     SPattack: 0,
@@ -164,6 +164,33 @@ export abstract class Pokemon {
     if (requestableMoveList.length >= 1) {
       requestableMoveList.forEach(requestableMove => this.requestNewMove(requestableMove));
     }
+  }
+
+
+  /**
+   * バトルステータスランクの加算
+   */
+  addBattleStatusRank(key: keyof IBattleStatusRank, number: number) {
+    const message: {
+      [key: string]: string
+    } = {
+      '1': 'あがった',
+      '2': 'ぐーんとあがった',
+      '3': 'ぐぐーんとあがった',
+      '12': '最大まであがった'
+    };
+
+    if (this.battleStatusRank[key] === 6) {
+      return `${this.nickname}の${this.battleStatusRank[key]}はもう上がらない`;
+    }
+
+    this.battleStatusRank[key] += number;
+
+    if (this.battleStatusRank[key] > 6) {
+      this.battleStatusRank[key] = 6;
+    }
+
+    return `${this.nickname}の${key}が${message[number.toString()]}`;
   }
 
   /**
