@@ -1,4 +1,5 @@
 import { Group } from './Group';
+import { Pokemon } from './Pokemon';
 
 export abstract class Move {
 
@@ -46,6 +47,13 @@ export abstract class Move {
    * 急所に当たりやすいランク
    */
   abstract _criticalRank: number | null;
+
+  /**
+   * 追加効果
+   */
+  effects(...pokemons: Pokemon[]): string {
+    return '';
+  }
 
 
   get name() {

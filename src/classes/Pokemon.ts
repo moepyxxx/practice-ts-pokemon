@@ -190,7 +190,7 @@ export abstract class Pokemon {
       this.battleStatusRank[key] = 6;
     }
 
-    return `${this.nickname}の${key}が${message[number.toString()]}`;
+    return `${this.name}の${key}が${message[number.toString()]}`;
   }
 
 
@@ -207,16 +207,16 @@ export abstract class Pokemon {
     };
 
     if (this.battleStatusRank[key] === -6) {
-      return `${this.nickname}の${this.battleStatusRank[key]}はもうさがらない`;
+      return `${this.name}の${this.battleStatusRank[key]}はもうさがらない`;
     }
 
     this.battleStatusRank[key] -= number;
 
-    if (this.battleStatusRank[key] < 6) {
+    if (this.battleStatusRank[key] < -6) {
       this.battleStatusRank[key] = -6;
     }
 
-    return `${this.nickname}の${key}が${message[number.toString()]}`;
+    return `${this.name}の${key}が${message[number.toString()]}`;
   }
 
   /**

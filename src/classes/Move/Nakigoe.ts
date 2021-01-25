@@ -1,5 +1,6 @@
 import { Move } from '../Move';
 import { Group } from '../Group';
+import { Pokemon } from '../Pokemon';
 import { GROUP_CLASS_LIST } from '../../utils/datas/groupClassDatas';
 
 
@@ -49,4 +50,12 @@ export class Nakigoe extends Move {
    * 急所に当たりやすいランク
    */
   _criticalRank = 0;
+
+  effects(...pokemons: Pokemon[]): string {
+
+    const [defPokemon] = pokemons;
+    const resultMessage: string = defPokemon.subBattleStatusRank('attack', 1);
+    return resultMessage;
+
+  }
 }
