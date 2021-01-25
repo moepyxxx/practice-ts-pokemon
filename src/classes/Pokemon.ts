@@ -171,6 +171,19 @@ export abstract class Pokemon {
    * バトルステータスランクの加算
    */
   addBattleStatusRank(key: keyof IBattleStatusRank, number: number) {
+    const statusName: {
+      [key: string]: string
+    } = {
+      'attack': 'こうげき',
+      'protected': 'ぼうぎょ',
+      'SPattack': 'とくこう',
+      'SPprotected': 'とくぼう',
+      'rapidity': 'すばやさ',
+      'critical': '急所のあたりやすさ',
+      'accuracy': 'めいちゅうりつ',
+      'evasion': 'かいひりつ',
+    };
+
     const message: {
       [key: string]: string
     } = {
@@ -181,7 +194,7 @@ export abstract class Pokemon {
     };
 
     if (this.battleStatusRank[key] === 6) {
-      return `${this.nickname}の${this.battleStatusRank[key]}はもう上がらない`;
+      return `${this.nickname}の${statusName[key]}はもう上がらない`;
     }
 
     this.battleStatusRank[key] += number;
@@ -190,7 +203,7 @@ export abstract class Pokemon {
       this.battleStatusRank[key] = 6;
     }
 
-    return `${this.name}の${key}が${message[number.toString()]}`;
+    return `${this.name}の${statusName[key]}が${message[number.toString()]}`;
   }
 
 
@@ -198,6 +211,19 @@ export abstract class Pokemon {
    * バトルステータスランクの減算
    */
   subBattleStatusRank(key: keyof IBattleStatusRank, number: number) {
+    const statusName: {
+      [key: string]: string
+    } = {
+      'attack': 'こうげき',
+      'protected': 'ぼうぎょ',
+      'SPattack': 'とくこう',
+      'SPprotected': 'とくぼう',
+      'rapidity': 'すばやさ',
+      'critical': '急所のあたりやすさ',
+      'accuracy': 'めいちゅうりつ',
+      'evasion': 'かいひりつ',
+    };
+
     const message: {
       [key: string]: string
     } = {
@@ -207,7 +233,7 @@ export abstract class Pokemon {
     };
 
     if (this.battleStatusRank[key] === -6) {
-      return `${this.name}の${this.battleStatusRank[key]}はもうさがらない`;
+      return `${this.name}の${statusName[key]}はもうさがらない`;
     }
 
     this.battleStatusRank[key] -= number;
@@ -216,7 +242,7 @@ export abstract class Pokemon {
       this.battleStatusRank[key] = -6;
     }
 
-    return `${this.name}の${key}が${message[number.toString()]}`;
+    return `${this.name}の${statusName[key]}が${message[number.toString()]}`;
   }
 
   /**
