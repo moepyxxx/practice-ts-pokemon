@@ -193,6 +193,32 @@ export abstract class Pokemon {
     return `${this.nickname}の${key}が${message[number.toString()]}`;
   }
 
+
+  /**
+   * バトルステータスランクの減算
+   */
+  subBattleStatusRank(key: keyof IBattleStatusRank, number: number) {
+    const message: {
+      [key: string]: string
+    } = {
+      '1': 'さがった',
+      '2': 'がくっとさがった',
+      '3': 'がくーんとさがった',
+    };
+
+    if (this.battleStatusRank[key] === -6) {
+      return `${this.nickname}の${this.battleStatusRank[key]}はもうさがらない`;
+    }
+
+    this.battleStatusRank[key] -= number;
+
+    if (this.battleStatusRank[key] < 6) {
+      this.battleStatusRank[key] = -6;
+    }
+
+    return `${this.nickname}の${key}が${message[number.toString()]}`;
+  }
+
   /**
    * 次のレベルに必要な経験値を取得
    */
