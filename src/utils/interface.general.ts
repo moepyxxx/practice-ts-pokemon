@@ -28,3 +28,14 @@ export interface IMove {
   lebel: number,
   move: Move
 }
+
+export interface IBattleStatusRank {
+  attack: number,
+  protected: number,
+  SPattack: number,
+  SPprotected: number,
+  rapidity: number,
+  critical: number,
+  accuracy: number,
+  evasion: number
+}

@@ -1,5 +1,6 @@
 import { DenkiShock } from '../../classes/Move/DenkiShock';
 import { Nakigoe } from '../../classes/Move/Nakigoe';
+import { Niramitsukeru } from '../../classes/Move/Niramitsukeru';
 import { Taiatari } from '../../classes/Move/Taiatari';
 import { Hataku } from '../../classes/Move/Hataku';
 import { Hikkaku } from '../../classes/Move/Hikkaku';
@@ -46,7 +47,7 @@ export const MOVE_CLASS_LIST: {
   "armHammer": new Nakigoe(),
   "jishin": new Nakigoe(),
   "hataku": new Hataku(),
-  "niramitsukeru": new Nakigoe(),
+  "niramitsukeru": new Niramitsukeru(),
   "mikiri": new Nakigoe(),
   "konoha": new Konoha(),
   "gigadorain": new Nakigoe(),

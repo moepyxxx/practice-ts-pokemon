@@ -1,4 +1,4 @@
-import { basicStatus, IMove } from '../utils/interface.general';
+import { basicStatus, IMove, IBattleStatusRank } from '../utils/interface.general';
 import { randomMultipleInArray } from '../utils/functions';
 import { Group } from './Group';
 
@@ -35,7 +35,7 @@ export abstract class Pokemon {
     rapidity: 0
   }
 
-  protected _battleStatusRank = {
+  protected _battleStatusRank: IBattleStatusRank = {
     attack: 0,
     protected: 0,
     SPattack: 0,
@@ -164,6 +164,85 @@ export abstract class Pokemon {
     if (requestableMoveList.length >= 1) {
       requestableMoveList.forEach(requestableMove => this.requestNewMove(requestableMove));
     }
+  }
+
+
+  /**
+   * バトルステータスランクの加算
+   */
+  addBattleStatusRank(key: keyof IBattleStatusRank, number: number) {
+    const statusName: {
+      [key: string]: string
+    } = {
+      'attack': 'こうげき',
+      'protected': 'ぼうぎょ',
+      'SPattack': 'とくこう',
+      'SPprotected': 'とくぼう',
+      'rapidity': 'すばやさ',
+      'critical': '急所のあたりやすさ',
+      'accuracy': 'めいちゅうりつ',
+      'evasion': 'かいひりつ',
+    };
+
+    const message: {
+      [key: string]: string
+    } = {
+      '1': 'あがった',
+      '2': 'ぐーんとあがった',
+      '3': 'ぐぐーんとあがった',
+      '12': '最大まであがった'
+    };
+
+    if (this.battleStatusRank[key] === 6) {
+      return `${this.nickname}の${statusName[key]}はもう上がらない`;
+    }
+
+    this.battleStatusRank[key] += number;
+
+    if (this.battleStatusRank[key] > 6) {
+      this.battleStatusRank[key] = 6;
+    }
+
+    return `${this.name}の${statusName[key]}が${message[number.toString()]}`;
+  }
+
+
+  /**
+   * バトルステータスランクの減算
+   */
+  subBattleStatusRank(key: keyof IBattleStatusRank, number: number) {
+    const statusName: {
+      [key: string]: string
+    } = {
+      'attack': 'こうげき',
+      'protected': 'ぼうぎょ',
+      'SPattack': 'とくこう',
+      'SPprotected': 'とくぼう',
+      'rapidity': 'すばやさ',
+      'critical': '急所のあたりやすさ',
+      'accuracy': 'めいちゅうりつ',
+      'evasion': 'かいひりつ',
+    };
+
+    const message: {
+      [key: string]: string
+    } = {
+      '1': 'さがった',
+      '2': 'がくっとさがった',
+      '3': 'がくーんとさがった',
+    };
+
+    if (this.battleStatusRank[key] === -6) {
+      return `${this.name}の${statusName[key]}はもうさがらない`;
+    }
+
+    this.battleStatusRank[key] -= number;
+
+    if (this.battleStatusRank[key] < -6) {
+      this.battleStatusRank[key] = -6;
+    }
+
+    return `${this.name}の${statusName[key]}が${message[number.toString()]}`;
   }
 
   /**

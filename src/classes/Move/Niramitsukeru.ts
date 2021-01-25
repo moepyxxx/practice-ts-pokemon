@@ -4,17 +4,17 @@ import { Pokemon } from '../Pokemon';
 import { GROUP_CLASS_LIST } from '../../utils/datas/groupClassDatas';
 
 
-export class Nakigoe extends Move {
+export class Niramitsukeru extends Move {
 
   /**
    * 名前
    */
-  _name = 'なきごえ';
+  _name = 'にらみつける';
 
   /**
    * 説明
    */
-  _description = '相手のこうげきを一段下げる';
+  _description = '相手のぼうぎょを一段下げる';
 
   /**
    * わざ種別
@@ -39,7 +39,7 @@ export class Nakigoe extends Move {
   /**
    * PP
    */
-  _pp = 40;
+  _pp = 30;
 
   /**
    * 優先度
@@ -54,7 +54,7 @@ export class Nakigoe extends Move {
   effects(...pokemons: Pokemon[]): string {
 
     const [atkPokemon, defPokemon] = pokemons;
-    const resultMessage: string = defPokemon.subBattleStatusRank('attack', 1);
+    const resultMessage: string = defPokemon.subBattleStatusRank('protected', 1);
     return resultMessage;
 
   }

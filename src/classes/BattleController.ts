@@ -104,6 +104,8 @@ export class BattleController {
     }
 
     if (move.species === '変化') {
+      const resultMsg = move.effects(atkPokemon, defPokemon);
+      this.controller.view.renderSerif(resultMsg);
       return damage;
     } else {
       this.controller.view.renderSerif(groupCompMessage);
