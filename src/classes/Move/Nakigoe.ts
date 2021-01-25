@@ -53,7 +53,7 @@ export class Nakigoe extends Move {
 
   effects(...pokemons: Pokemon[]): string {
 
-    const [defPokemon] = pokemons;
+    const [atkPokemon, defPokemon] = pokemons;
     const resultMessage: string = defPokemon.subBattleStatusRank('attack', 1);
     return resultMessage;
 
