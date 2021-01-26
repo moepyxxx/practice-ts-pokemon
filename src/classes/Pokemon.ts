@@ -161,7 +161,19 @@ export abstract class Pokemon {
   }
 
   get statusAilment() {
-    return this._statusAilment[0].name;
+    return this._statusAilment[0];
+  }
+
+  setStatusAilment(statusAilment: StatusAilment): string {
+    if (statusAilment === STATUS_AILMENT_CLASS_LIST.saFainting || this._statusAilment.length === 0) {
+      this._statusAilment = [];
+      this._statusAilment.push(statusAilment);      
+      return this._statusAilment[0].getSickedMessage(this, 'sicked');
+    } else if (statusAilment === this._statusAilment[0]) {
+      return this._statusAilment[0].getSickedMessage(this, 'already');
+    } else {
+      return 'しかし、うまくきまらなかった';
+    }
   }
 
   /**
