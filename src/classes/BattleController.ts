@@ -13,6 +13,7 @@ export class BattleController {
   public ownPokemons: ownPokemons[];
   public pokemon: Pokemon;
   public controller: Controller;
+  public runCount: number = 0;
   protected damageCorrection: number = 1;
 
   constructor(_ownPokemons: ownPokemons[], _controller: Controller) {
@@ -32,17 +33,22 @@ export class BattleController {
     this.controller.view.renderSerif(`あ、${this.enemy.name}があらわれた！`);
     this.controller.view.renderSerif(`いけ、${this.pokemon.name}！`);
 
-    this.setNigeruAction();
+    this.setRunAction();
     this.setTatakauAction();
   }
 
-  setNigeruAction() {
+  setRunAction() {
     const trigger = document.querySelector('#a-nigeru') as HTMLButtonElement;
     trigger.addEventListener('click', (e) => {
       e.preventDefault();
-      this.controller.view.hideBattleField();
-      this.controller.view.showMainField();
-      this.controller.view.renderSerif(`${this.enemy.name}からにげることができた`);
+
+      if (checkRun()) {
+        this.controller.view.hideBattleField();
+        this.controller.view.showMainField();
+        this.controller.view.renderSerif(`${this.enemy.name}からにげることができた`);
+      } else {
+        this.controller.view.renderSerif(`${this.enemy.name}からにげられなかった`);
+      }
     });
   }
 
@@ -146,6 +152,10 @@ export class BattleController {
       this.damageCorrection = 1;
       return damage;
     }
+  }
+
+  checkRun(): boolean {
+    return true;
   }
 
   calculateTypeMatch(moveGroup: Group, atkPokemonGroups: Group[]): void {
