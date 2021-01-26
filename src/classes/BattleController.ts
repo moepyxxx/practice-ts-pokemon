@@ -134,6 +134,13 @@ export class BattleController {
         this.damageCorrection
       );
 
+      // やけどをおったポケモンの攻撃の場合は、ダメージが半減する
+      if (atkPokemon.statusAilment) {
+        damage = atkPokemon.statusAilment.name === 'やけど'
+          ? damage *= 0.5
+          : damage;
+      }
+
       this.controller.view.renderSerif(`${defPokemon.name}に${damage}のダメージ！`);
 
       this.damageCorrection = 1;
