@@ -356,7 +356,7 @@ export abstract class Pokemon {
   /**
    * 種族値・個体値・努力値のステータスを計算して返却
    */
-  calculateBasicStatus(key: keyof basicStatus): basicStatus {
+  calculateBasicStatus(): basicStatus {
     for (let k of Object.keys(this.basicStatus) as (keyof basicStatus)[]) {
       const common = ((this._basicCategoryStatus[k] * 2) + this._basicIndividualStatus[k] + this._basicEffortStatus[k]) * this.lebel / 100;
       this.basicStatus[k] = k === 'hp' 
