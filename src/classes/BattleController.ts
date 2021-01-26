@@ -135,7 +135,7 @@ export class BattleController {
       );
 
       // やけどをおったポケモンの攻撃の場合は、ダメージが半減する
-      if (atkPokemon.statusAilment) {
+      if (atkPokemon.statusAilment && move.species === '物理') {
         damage = atkPokemon.statusAilment.name === 'やけど'
           ? damage *= 0.5
           : damage;
