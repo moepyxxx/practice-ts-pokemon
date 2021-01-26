@@ -1,6 +1,6 @@
 import { StatusAilment } from '../StatusAilment';
 
-class saParalysis extends StatusAilment {
+export class SaParalysis extends StatusAilment {
 
   /**
    * 名前
@@ -21,5 +21,5 @@ class saParalysis extends StatusAilment {
    * 状態異常のままターンになったときのメッセージ
    */
   protected _sickedTurnMessage: string = 'からだがしびれてうごない';
-  
+
 }

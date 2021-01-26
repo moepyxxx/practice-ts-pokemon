@@ -1,7 +1,8 @@
 import { basicStatus, IMove, IBattleStatusRank } from '../utils/interface.general';
 import { randomMultipleInArray } from '../utils/functions';
 import { Group } from './Group';
-import { TStatusAilment } from '../utils/type.general';
+import { STATUS_AILMENT_CLASS_LIST } from '../utils/datas/statusAilmentDatas';
+import { StatusAilment } from './StatusAilment';
 
 export abstract class Pokemon {
 
@@ -47,7 +48,7 @@ export abstract class Pokemon {
     evasion: 0,
   }
 
-  protected _statusAilment: TStatusAilment[] = [];
+  protected _statusAilment: StatusAilment[] = [];
 
   protected abstract evolve(): Pokemon;
 
@@ -160,7 +161,7 @@ export abstract class Pokemon {
   }
 
   get statusAilment() {
-    return this._statusAilment;
+    return this._statusAilment[0].name;
   }
 
   /**
