@@ -7,6 +7,7 @@ import { Hikkaku } from '../../classes/Move/Hikkaku';
 import { Konoha } from '../../classes/Move/Konoha';
 import { Hinoko } from '../../classes/Move/Hinoko';
 import { MizuDeppou } from '../../classes/Move/MizuDeppou';
+import { Denjiha } from '../../classes/Move/Denjiha';
 import { Move } from '../../classes/Move';
 
 export const MOVE_CLASS_LIST: {
@@ -21,7 +22,7 @@ export const MOVE_CLASS_LIST: {
   "denkouSekka": new Nakigoe(),
   "aianTeru": new Nakigoe(),
   "taiatari": new Taiatari(),
-  "denziha": new Nakigoe(),
+  "denjiha": new Denjiha(),
   "speedStar": new Nakigoe(),
   "yadorigiNoTane": new Nakigoe(),
   "tsuruNoMuchi": new Nakigoe(),

@@ -59,6 +59,8 @@ export class Wakasyamo extends Pokemon {
       this._lebel = this._beforeEvole.lebel;
       this._exPoint = this._beforeEvole.exPoint;
       this._moveList = this._beforeEvole.moveList;
+      this._statusAilment = [this._beforeEvole.statusAilment];
+      this._statusAilment = [this._beforeEvole.statusAilment];
     } else {
       this._lebel = randomSingleInArray<number>(this._initialLebel);
       this._exPoint = Math.pow(this.lebel, 3);

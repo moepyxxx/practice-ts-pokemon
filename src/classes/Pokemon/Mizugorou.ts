@@ -17,6 +17,7 @@ export class Mizugorou extends Pokemon {
     {lebel: 1, move: MOVE_CLASS_LIST.taiatari},
     {lebel:1, move: MOVE_CLASS_LIST.nakigoe},
     {lebel:3, move: MOVE_CLASS_LIST.mizudeppou},
+    {lebel:3, move: MOVE_CLASS_LIST.denjiha}
     // {lebel:6, move: 'いわくだき'},
     // {lebel:9, move: 'いわおとし'},
     // {lebel:12, move: 'まもる'},

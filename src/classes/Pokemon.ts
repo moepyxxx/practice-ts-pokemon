@@ -1,6 +1,9 @@
 import { basicStatus, IMove, IBattleStatusRank } from '../utils/interface.general';
 import { randomMultipleInArray } from '../utils/functions';
 import { Group } from './Group';
+import { STATUS_AILMENT_CLASS_LIST } from '../utils/datas/statusAilmentDatas';
+import { StatusAilment } from './StatusAilment';
+import { SaParalysis } from './StatusAilment/SaParalysis';
 
 export abstract class Pokemon {
 
@@ -45,6 +48,8 @@ export abstract class Pokemon {
     accuracy: 0,
     evasion: 0,
   }
+
+  protected _statusAilment: StatusAilment[] = [];
 
   protected abstract evolve(): Pokemon;
 
@@ -154,6 +159,22 @@ export abstract class Pokemon {
 
   get battleStatusRank() {
     return this._battleStatusRank;
+  }
+
+  get statusAilment() {
+    return this._statusAilment[0];
+  }
+
+  setStatusAilment(statusAilment: StatusAilment): string {
+    if (statusAilment === STATUS_AILMENT_CLASS_LIST.saFainting || this._statusAilment.length === 0) {
+      this._statusAilment = [];
+      this._statusAilment.push(statusAilment);      
+      return this._statusAilment[0].getSickedMessage(this, 'sicked');
+    } else if (statusAilment === this._statusAilment[0]) {
+      return this._statusAilment[0].getSickedMessage(this, 'already');
+    } else {
+      return 'しかし、うまくきまらなかった';
+    }
   }
 
   /**
@@ -343,6 +364,14 @@ export abstract class Pokemon {
         : Math.round(common + 5)
       ;
     }
+
+    // 状態異常がステータスに影響をおよぼす場合は計算
+    switch(this.statusAilment.name) {
+      case 'まひ':
+        this.basicStatus.rapidity /= 2;
+        break;
+    }
+
     return this.basicStatus;
   }
 
