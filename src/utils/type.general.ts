@@ -1,0 +1,1 @@
+export type TStatusAilment = 'saBurn' | 'saFreeze' | 'saParalysis' | 'saPoison' | 'saSleep' | 'saFainting';
