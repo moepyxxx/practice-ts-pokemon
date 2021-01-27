@@ -22,4 +22,9 @@ export class SaParalysis extends StatusAilment {
    */
   protected _sickedTurnMessage: string = 'からだがしびれてうごない';
 
+  /**
+   * 状態異常が回復したときのメッセージ
+   */
+  protected _sickedRecoceryMessage = 'からだのしびれがとれた';
+
 }

@@ -6,6 +6,7 @@ import { Achamo } from '../classes/Pokemon/Achamo';
 import { Mizugorou } from '../classes/Pokemon/Mizugorou';
 import { Kimori } from '../classes/Pokemon/Kimori';
 import { Controller } from './Controller';
+import { SaParalysis } from '../classes/StatusAilment/SaParalysis';
 
 export class BattleController {
 
@@ -13,6 +14,7 @@ export class BattleController {
   public ownPokemons: ownPokemons[];
   public pokemon: Pokemon;
   public controller: Controller;
+  public runCount: number = 0;
   protected damageCorrection: number = 1;
 
   constructor(_ownPokemons: ownPokemons[], _controller: Controller) {
@@ -32,17 +34,23 @@ export class BattleController {
     this.controller.view.renderSerif(`あ、${this.enemy.name}があらわれた！`);
     this.controller.view.renderSerif(`いけ、${this.pokemon.name}！`);
 
-    this.setNigeruAction();
+    this.setRunAction();
     this.setTatakauAction();
   }
 
-  setNigeruAction() {
+  setRunAction() {
     const trigger = document.querySelector('#a-nigeru') as HTMLButtonElement;
     trigger.addEventListener('click', (e) => {
       e.preventDefault();
-      this.controller.view.hideBattleField();
-      this.controller.view.showMainField();
-      this.controller.view.renderSerif(`${this.enemy.name}からにげることができた`);
+
+      if (this.checkRun()) {
+        this.controller.view.hideBattleField();
+        this.controller.view.showMainField();
+        this.controller.view.renderSerif(`${this.enemy.name}からにげることができた`);
+      } else {
+        this.runCount++;
+        this.controller.view.renderSerif(`${this.enemy.name}からにげられなかった`);
+      }
     });
   }
 
@@ -134,10 +142,30 @@ export class BattleController {
         this.damageCorrection
       );
 
+      // やけどをおったポケモンの攻撃の場合は、ダメージが半減する
+      if (atkPokemon.statusAilment && move.species === '物理') {
+        damage = atkPokemon.statusAilment.name === 'やけど'
+          ? damage *= 0.5
+          : damage;
+      }
+
       this.controller.view.renderSerif(`${defPokemon.name}に${damage}のダメージ！`);
 
       this.damageCorrection = 1;
       return damage;
+    }
+  }
+
+  checkRun(): boolean {
+    const atkPokemonRapidity = this.pokemon.calculateBasicStatus(true).rapidity;
+    const defPokemonRapidity = this.enemy.calculateBasicStatus(false).rapidity;
+    const calculateBasicStatus = ((atkPokemonRapidity * 128 / defPokemonRapidity) + 30 * this.runCount) / 256;
+    const randamNumber = Math.random();
+
+    if (calculateBasicStatus >= randamNumber) {
+      return true;      
+    } else {
+      return false;
     }
   }
 

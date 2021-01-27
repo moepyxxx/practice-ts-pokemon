@@ -168,7 +168,16 @@ export abstract class Pokemon {
   setStatusAilment(statusAilment: StatusAilment): string {
     if (statusAilment === STATUS_AILMENT_CLASS_LIST.saFainting || this._statusAilment.length === 0) {
       this._statusAilment = [];
-      this._statusAilment.push(statusAilment);      
+      this._statusAilment.push(statusAilment);
+
+      switch(statusAilment.name) {
+        case 'まひ':
+          this._battleStatusRank.rapidity -= 1;
+          break;
+        default:
+          break;
+      }
+
       return this._statusAilment[0].getSickedMessage(this, 'sicked');
     } else if (statusAilment === this._statusAilment[0]) {
       return this._statusAilment[0].getSickedMessage(this, 'already');
@@ -355,8 +364,9 @@ export abstract class Pokemon {
 
   /**
    * 種族値・個体値・努力値のステータスを計算して返却
+   * @param boolean 状態異常補正を行うかどうか
    */
-  calculateBasicStatus(): basicStatus {
+  calculateBasicStatus(isStatusAilmentCorrection: boolean = false): basicStatus {
     for (let k of Object.keys(this.basicStatus) as (keyof basicStatus)[]) {
       const common = ((this._basicCategoryStatus[k] * 2) + this._basicIndividualStatus[k] + this._basicEffortStatus[k]) * this.lebel / 100;
       this.basicStatus[k] = k === 'hp' 
@@ -365,14 +375,33 @@ export abstract class Pokemon {
       ;
     }
 
-    // 状態異常がステータスに影響をおよぼす場合は計算
-    switch(this.statusAilment.name) {
-      case 'まひ':
-        this.basicStatus.rapidity /= 2;
-        break;
+    if (isStatusAilmentCorrection && this.statusAilment) {
+      const rapidityBattleStatusRankCorrection = this.calculateBattleStatusRankCorrection('rapidity');
+      this.basicStatus.rapidity *= rapidityBattleStatusRankCorrection;
+
+      // 状態異常がステータスに影響をおよぼす場合は計算
+      switch(this.statusAilment.name) {
+        case 'まひ':
+          this.basicStatus.rapidity *= 0.5;
+          break;
+      }
     }
 
     return this.basicStatus;
+  }
+
+  /**
+   * ランク補正値の計算
+   */
+  calculateBattleStatusRankCorrection(key: keyof IBattleStatusRank): number {
+    const rank = this.battleStatusRank[key];
+    let per;
+    if (rank >= 0) {
+      per = (rank + 2) / 2;
+    } else {
+      per = 2 / (2 - rank);
+    }
+    return Math.floor(per);
   }
 
 
