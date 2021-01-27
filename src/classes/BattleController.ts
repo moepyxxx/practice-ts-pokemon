@@ -35,27 +35,26 @@ export class BattleController {
     this.controller.view.renderSerif(`あ、${this.enemy.name}があらわれた！`);
     this.controller.view.renderSerif(`いけ、${this.pokemon.name}！`);
 
-    this.setRunAction();
-    this.setTatakauAction();
+    this.setBattleSystem();
   }
 
-  setRunAction() {
-    const trigger = document.querySelector('#a-nigeru') as HTMLButtonElement;
-    trigger.addEventListener('click', (e) => {
-      e.preventDefault();
+  // setRunAction() {
+  //   const trigger = document.querySelector('#a-nigeru') as HTMLButtonElement;
+  //   trigger.addEventListener('click', (e) => {
+  //     e.preventDefault();
 
-      if (this.checkRun()) {
-        this.controller.view.hideBattleField();
-        this.controller.view.showMainField();
-        this.controller.view.renderSerif(`${this.enemy.name}からにげることができた`);
-      } else {
-        this.runCount++;
-        this.controller.view.renderSerif(`${this.enemy.name}からにげられなかった`);
-      }
-    });
-  }
+  //     if (this.checkRun()) {
+  //       this.controller.view.hideBattleField();
+  //       this.controller.view.showMainField();
+  //       this.controller.view.renderSerif(`${this.enemy.name}からにげることができた`);
+  //     } else {
+  //       this.runCount++;
+  //       this.controller.view.renderSerif(`${this.enemy.name}からにげられなかった`);
+  //     }
+  //   });
+  // }
 
-  setTatakauAction() {
+  setBattleSystem() {
 
     const addedTrigger = document.querySelector('#action_field') as HTMLButtonElement;
     this.pokemon.moveList.forEach((moveList, index) => {
@@ -66,19 +65,22 @@ export class BattleController {
       addedTrigger.appendChild(button);
     })
 
-    const triggers = document.querySelectorAll<HTMLButtonElement>('.action_class');
+    const actionTriggers = document.querySelectorAll<HTMLButtonElement>('.action_class');
+    const runTrigger = document.querySelector('#a-nigeru') as HTMLButtonElement;
 
-    // 的ポケモンがわざを選択
+    // 敵ポケモンがわざを選択
     const enemyAiMove: Move = this.selectAiMove(this.enemy);
+    let enemyDamage: number = 0;
+    let pokemonDamage: number = 0;
 
-    triggers.forEach(trigger => {
+    // たたかうを選択したとき
+    actionTriggers.forEach(trigger => {
       trigger.addEventListener('click', (e) => {
         e.preventDefault();
 
         const index = Number((<HTMLButtonElement>e.target).id.slice(-1));
         const pokemonMove: Move = this.pokemon.moveList[index].move;
 
-        let enemyDamage, pokemonDamage: number;
         if (this.checkFirstMove(pokemonMove, enemyAiMove)) {
           enemyDamage = this.tatakauAction(this.pokemon, this.enemy, pokemonMove);
           pokemonDamage = this.tatakauAction(this.enemy, this.pokemon, enemyAiMove);
@@ -86,9 +88,36 @@ export class BattleController {
           pokemonDamage = this.tatakauAction(this.enemy, this.pokemon, enemyAiMove);
           enemyDamage = this.tatakauAction(this.pokemon, this.enemy, pokemonMove);
         }
-        console.log(enemyDamage);
-        console.log(pokemonDamage);
+        // ステータス確認用
+        // console.log(enemyDamage);
+        // console.log(this.pokemon.battleStatusRank);
+        // console.log(this.pokemon.statusAilment);
+        // console.log(pokemonDamage);
+        // console.log(this.enemy.battleStatusRank);
+        // console.log(this.enemy.statusAilment);
       });
+    });
+
+    // にげるを選択したとき
+    runTrigger.addEventListener('click', (e) => {
+      e.preventDefault();
+
+      if (this.checkRun()) {
+        this.controller.view.hideBattleField();
+        this.controller.view.showMainField();
+        this.controller.view.renderSerif(`${this.enemy.name}からにげることができた`);
+      } else {
+        this.runCount++;
+        this.controller.view.renderSerif(`${this.enemy.name}からにげられなかった`);
+        pokemonDamage = this.tatakauAction(this.enemy, this.pokemon, enemyAiMove);
+      }
+      // ステータス確認用
+      // console.log(enemyDamage);
+      // console.log(this.pokemon.battleStatusRank);
+      // console.log(this.pokemon.statusAilment);
+      // console.log(pokemonDamage);
+      // console.log(this.enemy.battleStatusRank);
+      // console.log(this.enemy.statusAilment);
     });
   }
 
