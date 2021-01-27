@@ -3,7 +3,6 @@ import { randomMultipleInArray } from '../utils/functions';
 import { Group } from './Group';
 import { STATUS_AILMENT_CLASS_LIST } from '../utils/datas/statusAilmentDatas';
 import { StatusAilment } from './StatusAilment';
-import { SaParalysis } from './StatusAilment/SaParalysis';
 
 export abstract class Pokemon {
 
@@ -162,7 +161,7 @@ export abstract class Pokemon {
   }
 
   get statusAilment() {
-    return this._statusAilment[0];
+    return this._statusAilment[0] ?? null;
   }
 
   setStatusAilment(statusAilment: StatusAilment): string {
