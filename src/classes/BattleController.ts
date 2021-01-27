@@ -43,9 +43,6 @@ export class BattleController {
     trigger.addEventListener('click', (e) => {
       e.preventDefault();
 
-      console.log(this.enemy.calculateBasicStatus());
-      console.log(this.pokemon.calculateBasicStatus());
-
       if (this.checkRun()) {
         this.controller.view.hideBattleField();
         this.controller.view.showMainField();
@@ -163,12 +160,8 @@ export class BattleController {
     const atkPokemonRapidity = this.pokemon.calculateBasicStatus(true).rapidity;
     const defPokemonRapidity = this.enemy.calculateBasicStatus(false).rapidity;
     const calculateBasicStatus = ((atkPokemonRapidity * 128 / defPokemonRapidity) + 30 * this.runCount) / 256;
-
-    console.log(atkPokemonRapidity);
-    console.log(defPokemonRapidity);
-    console.log(calculateBasicStatus);
     const randamNumber = Math.random();
-    console.log(randamNumber);
+
     if (calculateBasicStatus >= randamNumber) {
       return true;      
     } else {

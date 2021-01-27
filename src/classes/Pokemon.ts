@@ -378,15 +378,13 @@ export abstract class Pokemon {
     if (isStatusAilmentCorrection && this.statusAilment) {
       const rapidityBattleStatusRankCorrection = this.calculateBattleStatusRankCorrection('rapidity');
       this.basicStatus.rapidity *= rapidityBattleStatusRankCorrection;
-      console.log(rapidityBattleStatusRankCorrection);
-      console.log(this.basicStatus.rapidity);
+
       // 状態異常がステータスに影響をおよぼす場合は計算
       switch(this.statusAilment.name) {
         case 'まひ':
           this.basicStatus.rapidity *= 0.5;
           break;
       }
-      console.log(this.basicStatus.rapidity);      
     }
 
     return this.basicStatus;

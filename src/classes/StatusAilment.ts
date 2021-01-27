@@ -39,12 +39,16 @@ export abstract class StatusAilment {
     switch(msgGroup) {
       case 'sicked':
         message = this._sickedMessage;
+        break;
       case 'already':
         message = this._alreadySickedMessage;
+        break;
       case 'turn':
         message = this._sickedTurnMessage;
+        break;
       case 'recovery':
         message = this._sickedRecoceryMessage;
+        break;
     }
     return `${pokemon.name}は${message}`;
   }
