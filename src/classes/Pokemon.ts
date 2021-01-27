@@ -172,7 +172,7 @@ export abstract class Pokemon {
 
       switch(statusAilment.name) {
         case 'まひ':
-          this._battleStatusRank.rapidity -= 1;
+          this.subBattleStatusRank('rapidity', 1);
           break;
         default:
           break;
