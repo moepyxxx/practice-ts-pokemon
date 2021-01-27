@@ -6,7 +6,8 @@ import { Achamo } from '../classes/Pokemon/Achamo';
 import { Mizugorou } from '../classes/Pokemon/Mizugorou';
 import { Kimori } from '../classes/Pokemon/Kimori';
 import { Controller } from './Controller';
-import { SaParalysis } from '../classes/StatusAilment/SaParalysis';
+import { MOVE_CLASS_LIST } from '../utils/datas/moveClassDatas';
+import { Nakigoe } from './Move/Nakigoe';
 
 export class BattleController {
 
@@ -66,14 +67,27 @@ export class BattleController {
     })
 
     const triggers = document.querySelectorAll<HTMLButtonElement>('.action_class');
+
+    // 的ポケモンがわざを選択
+    const enemyAiMove: Move = this.selectAiMove(this.enemy);
+
     triggers.forEach(trigger => {
       trigger.addEventListener('click', (e) => {
         e.preventDefault();
 
         const index = Number((<HTMLButtonElement>e.target).id.slice(-1));
-        const move: Move = this.pokemon.moveList[index].move;
-        const damage: number = this.tatakauAction(this.pokemon, this.enemy, move);
-        console.log(damage);
+        const pokemonMove: Move = this.pokemon.moveList[index].move;
+
+        let enemyDamage, pokemonDamage: number;
+        if (this.checkFirstMove(pokemonMove, enemyAiMove)) {
+          enemyDamage = this.tatakauAction(this.pokemon, this.enemy, pokemonMove);
+          pokemonDamage = this.tatakauAction(this.enemy, this.pokemon, enemyAiMove);
+        } else {
+          pokemonDamage = this.tatakauAction(this.enemy, this.pokemon, enemyAiMove);
+          enemyDamage = this.tatakauAction(this.pokemon, this.enemy, pokemonMove);
+        }
+        console.log(enemyDamage);
+        console.log(pokemonDamage);
       });
     });
   }
@@ -154,6 +168,38 @@ export class BattleController {
       this.damageCorrection = 1;
       return damage;
     }
+  }
+
+  checkFirstMove(pokemonMove: Move, enemyAiMove: Move): boolean {
+
+    // 優先度の比較
+    if (pokemonMove.priority > enemyAiMove.priority) {
+      return true;
+    } else if (enemyAiMove.priority > pokemonMove.priority) {
+      return false;
+    }
+
+    // すばやさの比較
+    const pokemonRapidity = this.pokemon.calculateBasicStatus(true).rapidity;
+    const enemyRapidity = this.enemy.calculateBasicStatus(true).rapidity;
+    if (pokemonRapidity > enemyRapidity) {
+      return true;
+    } else if (enemyRapidity > pokemonRapidity) {
+      return false;
+    }
+
+    // ランダム比較
+    const randomNumber = Math.floor(Math.random() * 2);
+    if (randomNumber === 0) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  selectAiMove(pokemon: Pokemon): Move {
+    const randomNumber: number = Math.floor(Math.random() * 3);
+    return pokemon.moveList[randomNumber].move;
   }
 
   checkRun(): boolean {
