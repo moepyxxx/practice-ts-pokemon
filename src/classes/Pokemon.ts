@@ -168,7 +168,16 @@ export abstract class Pokemon {
   setStatusAilment(statusAilment: StatusAilment): string {
     if (statusAilment === STATUS_AILMENT_CLASS_LIST.saFainting || this._statusAilment.length === 0) {
       this._statusAilment = [];
-      this._statusAilment.push(statusAilment);      
+      this._statusAilment.push(statusAilment);
+
+      switch(statusAilment.name) {
+        case 'まひ':
+          this._battleStatusRank.rapidity -= 1;
+          break;
+        default:
+          break;
+      }
+
       return this._statusAilment[0].getSickedMessage(this, 'sicked');
     } else if (statusAilment === this._statusAilment[0]) {
       return this._statusAilment[0].getSickedMessage(this, 'already');
@@ -367,15 +376,34 @@ export abstract class Pokemon {
     }
 
     if (isStatusAilmentCorrection && this.statusAilment) {
+      const rapidityBattleStatusRankCorrection = this.calculateBattleStatusRankCorrection('rapidity');
+      this.basicStatus.rapidity *= rapidityBattleStatusRankCorrection;
+      console.log(rapidityBattleStatusRankCorrection);
+      console.log(this.basicStatus.rapidity);
       // 状態異常がステータスに影響をおよぼす場合は計算
       switch(this.statusAilment.name) {
         case 'まひ':
-          this.basicStatus.rapidity /= 2;
+          this.basicStatus.rapidity *= 0.5;
           break;
       }
+      console.log(this.basicStatus.rapidity);      
     }
 
     return this.basicStatus;
+  }
+
+  /**
+   * ランク補正値の計算
+   */
+  calculateBattleStatusRankCorrection(key: keyof IBattleStatusRank): number {
+    const rank = this.battleStatusRank[key];
+    let per;
+    if (rank >= 0) {
+      per = (rank + 2) / 2;
+    } else {
+      per = 2 / (2 - rank);
+    }
+    return Math.floor(per);
   }
 
 

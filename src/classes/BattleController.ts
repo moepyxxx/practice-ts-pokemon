@@ -6,6 +6,7 @@ import { Achamo } from '../classes/Pokemon/Achamo';
 import { Mizugorou } from '../classes/Pokemon/Mizugorou';
 import { Kimori } from '../classes/Pokemon/Kimori';
 import { Controller } from './Controller';
+import { SaParalysis } from '../classes/StatusAilment/SaParalysis';
 
 export class BattleController {
 
@@ -41,6 +42,9 @@ export class BattleController {
     const trigger = document.querySelector('#a-nigeru') as HTMLButtonElement;
     trigger.addEventListener('click', (e) => {
       e.preventDefault();
+
+      console.log(this.enemy.calculateBasicStatus());
+      console.log(this.pokemon.calculateBasicStatus());
 
       if (this.checkRun()) {
         this.controller.view.hideBattleField();
@@ -160,7 +164,12 @@ export class BattleController {
     const defPokemonRapidity = this.enemy.calculateBasicStatus(false).rapidity;
     const calculateBasicStatus = ((atkPokemonRapidity * 128 / defPokemonRapidity) + 30 * this.runCount) / 256;
 
-    if (calculateBasicStatus >= Math.random()) {
+    console.log(atkPokemonRapidity);
+    console.log(defPokemonRapidity);
+    console.log(calculateBasicStatus);
+    const randamNumber = Math.random();
+    console.log(randamNumber);
+    if (calculateBasicStatus >= randamNumber) {
       return true;      
     } else {
       return false;
