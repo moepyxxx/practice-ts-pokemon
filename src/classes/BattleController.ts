@@ -42,11 +42,12 @@ export class BattleController {
     trigger.addEventListener('click', (e) => {
       e.preventDefault();
 
-      if (checkRun()) {
+      if (this.checkRun()) {
         this.controller.view.hideBattleField();
         this.controller.view.showMainField();
         this.controller.view.renderSerif(`${this.enemy.name}からにげることができた`);
       } else {
+        this.runCount++;
         this.controller.view.renderSerif(`${this.enemy.name}からにげられなかった`);
       }
     });
@@ -155,7 +156,15 @@ export class BattleController {
   }
 
   checkRun(): boolean {
-    return true;
+    const atkPokemonRapidity = this.pokemon.calculateBasicStatus(true).rapidity;
+    const defPokemonRapidity = this.enemy.calculateBasicStatus(false).rapidity;
+    const calculateBasicStatus = ((atkPokemonRapidity * 128 / defPokemonRapidity) + 30 * this.runCount) / 256;
+
+    if (calculateBasicStatus >= Math.random()) {
+      return true;      
+    } else {
+      return false;
+    }
   }
 
   calculateTypeMatch(moveGroup: Group, atkPokemonGroups: Group[]): void {

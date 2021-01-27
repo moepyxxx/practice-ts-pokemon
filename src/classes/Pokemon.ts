@@ -366,7 +366,7 @@ export abstract class Pokemon {
       ;
     }
 
-    if (isStatusAilmentCorrection) {
+    if (isStatusAilmentCorrection && this.statusAilment) {
       // 状態異常がステータスに影響をおよぼす場合は計算
       switch(this.statusAilment.name) {
         case 'まひ':
