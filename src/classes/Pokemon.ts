@@ -12,11 +12,15 @@ export abstract class Pokemon {
 
   protected abstract _groups: Group[];
 
-  protected abstract _moveList: IMove[];
   protected abstract _moveListToRequest: IMove[];
   protected abstract _initialLebel: number[];
-  protected abstract _lebel: number;
-  protected abstract _exPoint: number;
+  // protected abstract _moveList: IMove[];
+  // protected abstract _lebel: number;
+  // protected abstract _exPoint: number;
+
+  _lebel: number = 0;
+  _exPoint: number = 0;
+  _moveList: IMove[] = [];
 
   protected abstract _basicCategoryStatus: basicStatus;
   protected _basicIndividualStatus: basicStatus;
@@ -47,6 +51,8 @@ export abstract class Pokemon {
     accuracy: 0,
     evasion: 0,
   }
+
+  protected _remainingHp: number = this.basicStatus.hp;
 
   protected _statusAilment: StatusAilment[] = [];
 
@@ -162,6 +168,22 @@ export abstract class Pokemon {
 
   get statusAilment() {
     return this._statusAilment[0] ?? null;
+  }
+
+  get remainingHp() {
+    return this._remainingHp;
+  }
+
+  takeOverPokemonData(beforeEvolvePokemon: Pokemon) {
+    this._nickname = beforeEvolvePokemon.nickname;
+    this._basicEffortStatus =beforeEvolvePokemon.basicEffortStatus;
+    this._basicIndividualStatus =beforeEvolvePokemon.basicIndividualStatus;
+
+    this._lebel =beforeEvolvePokemon.lebel;
+    this._exPoint =beforeEvolvePokemon.exPoint;
+    this._moveList =beforeEvolvePokemon.moveList;
+    this._statusAilment = [beforeEvolvePokemon.statusAilment];
+    this._remainingHp =beforeEvolvePokemon.remainingHp;
   }
 
   setStatusAilment(statusAilment: StatusAilment): string {

@@ -62,6 +62,7 @@ export class Jukain extends Pokemon {
       this._exPoint = this._beforeEvole.exPoint;
       this._moveList = this._beforeEvole.moveList;
       this._statusAilment = [this._beforeEvole.statusAilment];
+      this._remainingHp = this._beforeEvole.remainingHp;
     } else {
       this._lebel = randomSingleInArray<number>(this._initialLebel);
       this._exPoint = Math.pow(this.lebel, 3);

@@ -39,9 +39,6 @@ export class Kimori extends Pokemon {
     SPprotected: 55,
     rapidity: 70
   };
-  _lebel: number;
-  _exPoint: number;
-  _moveList: IMove[];
 
   constructor(_beforeEvole: Pokemon | null, _nickname?: string) {
     super(_beforeEvole, _nickname);

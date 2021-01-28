@@ -43,24 +43,13 @@ export class Basyamo extends Pokemon {
     SPprotected: 70,
     rapidity: 80
   };
-  _lebel: number;
-  _exPoint: number;
-  _moveList: IMove[];
 
   constructor(_beforeEvole: Pokemon | null, _nickname?: string) {
     super(_beforeEvole, _nickname);
 
     if (this._beforeEvole) {
       this.render(`${this.name}に進化した。`);
-
-      this._nickname = this._beforeEvole.nickname;
-      this._basicEffortStatus = this._beforeEvole.basicEffortStatus;
-      this._basicIndividualStatus = this._beforeEvole.basicIndividualStatus;
-
-      this._lebel = this._beforeEvole.lebel;
-      this._exPoint = this._beforeEvole.exPoint;
-      this._moveList = this._beforeEvole.moveList;
-      this._statusAilment = [this._beforeEvole.statusAilment];
+      this.takeOverPokemonData(this._beforeEvole);
     } else {
       this._lebel = randomSingleInArray<number>(this._initialLebel);
       this._exPoint = Math.pow(this.lebel, 3);

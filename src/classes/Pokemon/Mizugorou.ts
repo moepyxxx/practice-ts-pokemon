@@ -40,9 +40,6 @@ export class Mizugorou extends Pokemon {
     SPprotected: 50,
     rapidity: 40
   };
-  _lebel: number;
-  _exPoint: number;
-  _moveList: IMove[];
 
   constructor(_beforeEvole: Pokemon | null, _nickname?: string) {
     super(_beforeEvole, _nickname);
