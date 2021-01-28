@@ -43,6 +43,7 @@ export class Basyamo extends Pokemon {
     SPprotected: 70,
     rapidity: 80
   };
+  _remainingHp: number;
 
   constructor(_beforeEvole: Pokemon | null, _nickname?: string) {
     super(_beforeEvole, _nickname);
@@ -57,6 +58,7 @@ export class Basyamo extends Pokemon {
     }
 
     this._basicStatus = this.calculateBasicStatus();
+    this._remainingHp = this.basicStatus.hp;
   }
 
   protected evolve(): Pokemon {

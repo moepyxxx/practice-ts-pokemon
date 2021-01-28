@@ -83,18 +83,27 @@ export class BattleController {
 
         if (this.checkFirstMove(pokemonMove, enemyAiMove)) {
           enemyDamage = this.tatakauAction(this.pokemon, this.enemy, pokemonMove);
+          this.enemy.calculateRemainingHp('sub', enemyDamage);
           pokemonDamage = this.tatakauAction(this.enemy, this.pokemon, enemyAiMove);
+          this.pokemon.calculateRemainingHp('sub', pokemonDamage);
         } else {
           pokemonDamage = this.tatakauAction(this.enemy, this.pokemon, enemyAiMove);
+          this.pokemon.calculateRemainingHp('sub', pokemonDamage);
           enemyDamage = this.tatakauAction(this.pokemon, this.enemy, pokemonMove);
+          this.enemy.calculateRemainingHp('sub', enemyDamage);
         }
         // ステータス確認用
-        // console.log(enemyDamage);
-        // console.log(this.pokemon.battleStatusRank);
-        // console.log(this.pokemon.statusAilment);
+        // console.log(this.pokemon.basicStatus);
         // console.log(pokemonDamage);
-        // console.log(this.enemy.battleStatusRank);
-        // console.log(this.enemy.statusAilment);
+        // // console.log(this.pokemon.battleStatusRank);
+        // // console.log(this.pokemon.statusAilment);
+        // console.log(this.pokemon.remainingHp);
+
+        // console.log(this.pokemon.basicStatus);
+        // console.log(enemyDamage);
+        // // console.log(this.enemy.battleStatusRank);
+        // // console.log(this.enemy.statusAilment);
+        // console.log(this.pokemon.remainingHp);
       });
     });
 
@@ -110,14 +119,19 @@ export class BattleController {
         this.runCount++;
         this.controller.view.renderSerif(`${this.enemy.name}からにげられなかった`);
         pokemonDamage = this.tatakauAction(this.enemy, this.pokemon, enemyAiMove);
+        this.pokemon.calculateRemainingHp('sub', pokemonDamage);
       }
       // ステータス確認用
-      // console.log(enemyDamage);
+      // console.log(this.pokemon.basicStatus);
+      // console.log(pokemonDamage);
       // console.log(this.pokemon.battleStatusRank);
       // console.log(this.pokemon.statusAilment);
-      // console.log(pokemonDamage);
+      // console.log(this.pokemon.remainingHp);
+      // console.log(this.pokemon.basicStatus);
+      // console.log(enemyDamage);
       // console.log(this.enemy.battleStatusRank);
       // console.log(this.enemy.statusAilment);
+      // console.log(this.pokemon.remainingHp);
     });
   }
 

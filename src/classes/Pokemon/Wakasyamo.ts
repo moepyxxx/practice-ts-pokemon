@@ -42,6 +42,7 @@ export class Wakasyamo extends Pokemon {
     SPprotected: 60,
     rapidity: 55
   };
+  _remainingHp: number;
 
   constructor(_beforeEvole: Pokemon | null, _nickname?: string) {
     super(_beforeEvole, _nickname);
@@ -57,6 +58,7 @@ export class Wakasyamo extends Pokemon {
     }
 
     this._basicStatus = this.calculateBasicStatus();
+    this._remainingHp = this.basicStatus.hp;
   }
 
   protected evolve(): Pokemon {

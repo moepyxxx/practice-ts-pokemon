@@ -42,6 +42,7 @@ export class Juputoru extends Pokemon {
     SPprotected: 65,
     rapidity: 95
   };
+  _remainingHp: number;
   
   constructor(_beforeEvole: Pokemon | null, _nickname?: string) {
     super(_beforeEvole, _nickname);
@@ -56,6 +57,7 @@ export class Juputoru extends Pokemon {
     }
 
     this._basicStatus = this.calculateBasicStatus();
+    this._remainingHp = this.basicStatus.hp;
   }
 
   protected evolve(): Pokemon {

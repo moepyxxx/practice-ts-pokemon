@@ -14,9 +14,6 @@ export abstract class Pokemon {
 
   protected abstract _moveListToRequest: IMove[];
   protected abstract _initialLebel: number[];
-  // protected abstract _moveList: IMove[];
-  // protected abstract _lebel: number;
-  // protected abstract _exPoint: number;
 
   _lebel: number = 0;
   _exPoint: number = 0;
@@ -52,7 +49,7 @@ export abstract class Pokemon {
     evasion: 0,
   }
 
-  protected _remainingHp: number = this.basicStatus.hp;
+  protected abstract _remainingHp: number;
 
   protected _statusAilment: StatusAilment[] = [];
 
@@ -174,6 +171,10 @@ export abstract class Pokemon {
     return this._remainingHp;
   }
 
+  set remainingHp(number) {
+    this._remainingHp = number;
+  }
+
   takeOverPokemonData(beforeEvolvePokemon: Pokemon) {
     this._nickname = beforeEvolvePokemon.nickname;
     this._basicEffortStatus =beforeEvolvePokemon.basicEffortStatus;
@@ -184,6 +185,10 @@ export abstract class Pokemon {
     this._moveList =beforeEvolvePokemon.moveList;
     this._statusAilment = [beforeEvolvePokemon.statusAilment];
     this._remainingHp =beforeEvolvePokemon.remainingHp;
+  }
+
+  resetStatusAilment(): void {
+    this._statusAilment = [];
   }
 
   setStatusAilment(statusAilment: StatusAilment): string {
@@ -215,6 +220,35 @@ export abstract class Pokemon {
     if (requestableMoveList.length >= 1) {
       requestableMoveList.forEach(requestableMove => this.requestNewMove(requestableMove));
     }
+  }
+
+
+  /**
+   * 残りhpの計算
+   */
+  calculateRemainingHp(effect: 'saFainting' | 'sub' | 'add' | 'reset', number: number): number {
+    switch (effect) {
+      case 'add':
+        this.remainingHp += number;
+        break;
+      case 'sub':
+        this.remainingHp -= number;
+        break;
+      case 'reset':
+        this.remainingHp = this.basicStatus.hp;
+        this.resetStatusAilment();
+        break;
+      case 'saFainting':
+        this.remainingHp = 0;
+        this.remainingHp = this.remainingHp > this.basicStatus.hp 
+          ? this.basicStatus.hp
+          : this.remainingHp;
+    }
+
+    if (this.remainingHp === 0) {
+      this.setStatusAilment(STATUS_AILMENT_CLASS_LIST.saFainting);
+    }
+    return this.remainingHp;
   }
 
 

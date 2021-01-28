@@ -43,6 +43,7 @@ export class Raguraji extends Pokemon {
     SPprotected: 90,
     rapidity: 60
   };
+  _remainingHp: number;
   
   constructor(_beforeEvole: Pokemon | null, _nickname?: string) {
     super(_beforeEvole, _nickname);
@@ -57,6 +58,7 @@ export class Raguraji extends Pokemon {
     }
 
     this._basicStatus = this.calculateBasicStatus();
+    this._remainingHp = this.basicStatus.hp;
   }
 
   protected evolve(): Pokemon {

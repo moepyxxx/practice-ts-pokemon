@@ -40,6 +40,7 @@ export class Mizugorou extends Pokemon {
     SPprotected: 50,
     rapidity: 40
   };
+  _remainingHp: number;
 
   constructor(_beforeEvole: Pokemon | null, _nickname?: string) {
     super(_beforeEvole, _nickname);
@@ -51,6 +52,7 @@ export class Mizugorou extends Pokemon {
     this._moveList = this.getInitialMoveList(this.lebel);
 
     this._basicStatus = this.calculateBasicStatus();
+    this._remainingHp = this.basicStatus.hp;
   }
 
   protected evolve(): Pokemon {
