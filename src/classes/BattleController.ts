@@ -50,6 +50,14 @@ export class BattleController {
     const actionTriggers = document.querySelectorAll<HTMLButtonElement>('.action_class');
     const runTrigger = document.querySelector('#a-nigeru') as HTMLButtonElement;
 
+    // たたかうポケモンをセット
+    interface MoveActionSet {
+      pokemon: Pokemon,
+      enemy: Pokemon,
+      move: Move
+    };
+    const actionPokemons: MoveActionSet[] = [];
+
     // 敵ポケモンがわざを選択
     const enemyAiMove: Move = this.selectAiMove(this.enemy);
     let enemyDamage: number = 0;
@@ -63,29 +71,23 @@ export class BattleController {
         const index = Number((<HTMLButtonElement>e.target).id.slice(-1));
         const pokemonMove: Move = this.pokemon.moveList[index].move;        
 
-        if (this.checkFirstMove(pokemonMove, enemyAiMove)) {
-          enemyDamage = this.tatakauAction(this.pokemon, this.enemy, pokemonMove);
-          this.enemy.calculateRemainingHp('sub', enemyDamage);
-          pokemonDamage = this.tatakauAction(this.enemy, this.pokemon, enemyAiMove);
-          this.pokemon.calculateRemainingHp('sub', pokemonDamage);
-
-          if (this.checkPokemonSaFainting(this.pokemon)) {
-            this.controller.view.hideBattleField();
-            this.controller.view.showMainField();
-            this.controller.view.renderSerif(`${this.pokemon.name}はたおれた。hpがゼロになったので、バトルが終了した！`);
-          }
-        } else {
-          pokemonDamage = this.tatakauAction(this.enemy, this.pokemon, enemyAiMove);
-          this.pokemon.calculateRemainingHp('sub', pokemonDamage);
-          enemyDamage = this.tatakauAction(this.pokemon, this.enemy, pokemonMove);
-          this.enemy.calculateRemainingHp('sub', enemyDamage);
-
-          if (this.checkPokemonSaFainting(this.enemy)) {
-            this.controller.view.hideBattleField();
-            this.controller.view.showMainField();
-            this.controller.view.renderSerif(`${this.enemy.name}はたおれた。hpがゼロになったので、バトルが終了した！`);
-          }
+        const pokemonMoveData: MoveActionSet = {
+          pokemon: this.pokemon,
+          enemy: this.enemy,
+          move: pokemonMove
         }
+        const enemyMoveData: MoveActionSet = {
+          pokemon: this.enemy,
+          enemy: this.pokemon,
+          move: enemyAiMove
+        }
+
+        actionPokemons.push(pokemonMoveData);
+        actionPokemons.push(enemyMoveData);
+
+        const checkedMoveOrderPokemons = this.checkMoveOrder(actionPokemons);
+        this.actionExecute(checkedMoveOrderPokemons);
+
         // ステータス確認用
         // console.log(this.pokemon.basicStatus);
         // console.log(pokemonDamage);
@@ -137,8 +139,26 @@ export class BattleController {
     });
   }
 
-  // 所定のロジックで確認して、順位をつける関数を作成
-  checkMoveOrder(pokemonMove: { pokemon: Pokemon, move: Move }[]): { pokemon: Pokemon, move: Move }[] {
+  actionExecute(pokemonMoves: { pokemon: Pokemon, enemy: Pokemon, move: Move }[]): void {
+
+    pokemonMoves.forEach((moveAction) => {
+      const damage = this.tatakauAction(moveAction.pokemon, moveAction.enemy, moveAction.move);
+      moveAction.enemy.calculateRemainingHp('sub', damage);
+
+      if (this.checkPokemonSaFainting(moveAction.enemy)) {
+        this.controller.view.hideBattleField();
+        this.controller.view.showMainField();
+        this.controller.view.renderSerif(`${moveAction.enemy.name}はたおれた。hpがゼロになったので、バトルが終了した！`);
+      }
+    });
+    pokemonMoves.splice(0);
+
+  }
+
+  /**
+   * たたかうアクションを選択したポケモンたちのわざだし順番をチェック
+   */
+  checkMoveOrder(pokemonMove: { pokemon: Pokemon, enemy: Pokemon, move: Move }[]): { pokemon: Pokemon, enemy: Pokemon, move: Move }[] {
 
     return pokemonMove.sort((next, cur) => {
 
@@ -167,10 +187,8 @@ export class BattleController {
 
   checkPokemonSaFainting(pokemon: Pokemon): boolean {
     if (pokemon.statusAilment?.name === 'ひんし') {
-      console.log(true);
       return true;
     }
-    console.log(false);
     return false;
   }
 
