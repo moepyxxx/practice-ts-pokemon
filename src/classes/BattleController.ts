@@ -60,8 +60,6 @@ export class BattleController {
 
     // 敵ポケモンがわざを選択
     const enemyAiMove: Move = this.selectAiMove(this.enemy);
-    let enemyDamage: number = 0;
-    let pokemonDamage: number = 0;
 
     // たたかうを選択したとき
     actionTriggers.forEach(trigger => {
@@ -114,14 +112,17 @@ export class BattleController {
       } else {
         this.runCount++;
         this.controller.view.renderSerif(`${this.enemy.name}からにげられなかった`);
-        pokemonDamage = this.tatakauAction(this.enemy, this.pokemon, enemyAiMove);
-        this.pokemon.calculateRemainingHp('sub', pokemonDamage);
 
-        if (this.checkPokemonSaFainting(this.pokemon)) {
-          this.controller.view.hideBattleField();
-          this.controller.view.showMainField();
-          this.controller.view.renderSerif(`hpがゼロになったので、バトルが終了した！`);
+        const enemyMoveData: MoveActionSet = {
+          pokemon: this.enemy,
+          enemy: this.pokemon,
+          move: enemyAiMove
         }
+
+        actionPokemons.push(enemyMoveData);
+
+        const checkedMoveOrderPokemons = this.checkMoveOrder(actionPokemons);
+        this.actionExecute(checkedMoveOrderPokemons);
       }
       // ステータス確認用
       // console.log(this.pokemon.basicStatus);
