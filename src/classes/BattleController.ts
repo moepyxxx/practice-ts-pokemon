@@ -6,8 +6,6 @@ import { Achamo } from '../classes/Pokemon/Achamo';
 import { Mizugorou } from '../classes/Pokemon/Mizugorou';
 import { Kimori } from '../classes/Pokemon/Kimori';
 import { Controller } from './Controller';
-import { MOVE_CLASS_LIST } from '../utils/datas/moveClassDatas';
-import { Nakigoe } from './Move/Nakigoe';
 
 export class BattleController {
 
@@ -70,24 +68,36 @@ export class BattleController {
           this.enemy.calculateRemainingHp('sub', enemyDamage);
           pokemonDamage = this.tatakauAction(this.enemy, this.pokemon, enemyAiMove);
           this.pokemon.calculateRemainingHp('sub', pokemonDamage);
+
+          if (this.checkPokemonSaFainting(this.pokemon)) {
+            this.controller.view.hideBattleField();
+            this.controller.view.showMainField();
+            this.controller.view.renderSerif(`${this.pokemon.name}はたおれた。hpがゼロになったので、バトルが終了した！`);
+          }
         } else {
           pokemonDamage = this.tatakauAction(this.enemy, this.pokemon, enemyAiMove);
           this.pokemon.calculateRemainingHp('sub', pokemonDamage);
           enemyDamage = this.tatakauAction(this.pokemon, this.enemy, pokemonMove);
           this.enemy.calculateRemainingHp('sub', enemyDamage);
+
+          if (this.checkPokemonSaFainting(this.enemy)) {
+            this.controller.view.hideBattleField();
+            this.controller.view.showMainField();
+            this.controller.view.renderSerif(`${this.enemy.name}はたおれた。hpがゼロになったので、バトルが終了した！`);
+          }
         }
         // ステータス確認用
         // console.log(this.pokemon.basicStatus);
         // console.log(pokemonDamage);
         // // console.log(this.pokemon.battleStatusRank);
-        // // console.log(this.pokemon.statusAilment);
+        // console.log(this.pokemon.statusAilment?.name);
         // console.log(this.pokemon.remainingHp);
 
         // console.log(this.pokemon.basicStatus);
         // console.log(enemyDamage);
         // // console.log(this.enemy.battleStatusRank);
-        // // console.log(this.enemy.statusAilment);
-        // console.log(this.pokemon.remainingHp);
+        // console.log(this.enemy.statusAilment?.name);
+        // console.log(this.enemy.remainingHp);
       });
     });
 
@@ -104,6 +114,12 @@ export class BattleController {
         this.controller.view.renderSerif(`${this.enemy.name}からにげられなかった`);
         pokemonDamage = this.tatakauAction(this.enemy, this.pokemon, enemyAiMove);
         this.pokemon.calculateRemainingHp('sub', pokemonDamage);
+
+        if (this.checkPokemonSaFainting(this.pokemon)) {
+          this.controller.view.hideBattleField();
+          this.controller.view.showMainField();
+          this.controller.view.renderSerif(`hpがゼロになったので、バトルが終了した！`);
+        }
       }
       // ステータス確認用
       // console.log(this.pokemon.basicStatus);
@@ -111,12 +127,23 @@ export class BattleController {
       // console.log(this.pokemon.battleStatusRank);
       // console.log(this.pokemon.statusAilment);
       // console.log(this.pokemon.remainingHp);
+      // console.log(this.pokemon.statusAilment);
       // console.log(this.pokemon.basicStatus);
       // console.log(enemyDamage);
       // console.log(this.enemy.battleStatusRank);
       // console.log(this.enemy.statusAilment);
       // console.log(this.pokemon.remainingHp);
+      // console.log(this.pokemon.statusAilment);
     });
+  }
+
+  checkPokemonSaFainting(pokemon: Pokemon): boolean {
+    if (pokemon.statusAilment?.name === 'ひんし') {
+      console.log(true);
+      return true;
+    }
+    console.log(false);
+    return false;
   }
 
   tatakauAction(atkPokemon: Pokemon, defPokemon: Pokemon, move: Move): number {

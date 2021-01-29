@@ -245,8 +245,9 @@ export abstract class Pokemon {
           : this.remainingHp;
     }
 
-    if (this.remainingHp === 0) {
+    if (this.remainingHp <= 0) {
       this.setStatusAilment(STATUS_AILMENT_CLASS_LIST.saFainting);
+      this.remainingHp = 0;
     }
     return this.remainingHp;
   }
