@@ -38,22 +38,6 @@ export class BattleController {
     this.setBattleSystem();
   }
 
-  // setRunAction() {
-  //   const trigger = document.querySelector('#a-nigeru') as HTMLButtonElement;
-  //   trigger.addEventListener('click', (e) => {
-  //     e.preventDefault();
-
-  //     if (this.checkRun()) {
-  //       this.controller.view.hideBattleField();
-  //       this.controller.view.showMainField();
-  //       this.controller.view.renderSerif(`${this.enemy.name}からにげることができた`);
-  //     } else {
-  //       this.runCount++;
-  //       this.controller.view.renderSerif(`${this.enemy.name}からにげられなかった`);
-  //     }
-  //   });
-  // }
-
   setBattleSystem() {
 
     const addedTrigger = document.querySelector('#action_field') as HTMLButtonElement;
