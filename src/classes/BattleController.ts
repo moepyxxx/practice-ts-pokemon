@@ -61,7 +61,7 @@ export class BattleController {
         e.preventDefault();
 
         const index = Number((<HTMLButtonElement>e.target).id.slice(-1));
-        const pokemonMove: Move = this.pokemon.moveList[index].move;
+        const pokemonMove: Move = this.pokemon.moveList[index].move;        
 
         if (this.checkFirstMove(pokemonMove, enemyAiMove)) {
           enemyDamage = this.tatakauAction(this.pokemon, this.enemy, pokemonMove);
@@ -134,6 +134,34 @@ export class BattleController {
       // console.log(this.enemy.statusAilment);
       // console.log(this.pokemon.remainingHp);
       // console.log(this.pokemon.statusAilment);
+    });
+  }
+
+  // 所定のロジックで確認して、順位をつける関数を作成
+  checkMoveOrder(pokemonMove: { pokemon: Pokemon, move: Move }[]): { pokemon: Pokemon, move: Move }[] {
+
+    return pokemonMove.sort((next, cur) => {
+
+      // わざの優先度を確認
+      if (next.move.priority !== cur.move.priority) {
+        if (next.move.priority < cur.move.priority) return 1;
+        if (next.move.priority > cur.move.priority) return -1;
+      }
+
+      // ポケモンのすばやさを確認
+      if (next.pokemon.calculateBasicStatus(true).rapidity !== cur.pokemon.calculateBasicStatus(true).rapidity) {
+        if (next.pokemon.calculateBasicStatus(true).rapidity < cur.pokemon.calculateBasicStatus(true).rapidity) return 1;
+        if (next.pokemon.calculateBasicStatus(true).rapidity > cur.pokemon.calculateBasicStatus(true).rapidity) return -1;
+      }
+
+      // ランダム確認
+      const randomNum = Math.floor(Math.random() * 2);
+      if (randomNum === 0) {
+        return 1;
+      } else {
+        return -1;
+      }
+
     });
   }
 
