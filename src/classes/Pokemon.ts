@@ -112,12 +112,14 @@ export abstract class Pokemon {
 
     if (this.getReqLebelUpExPoint() <= this.exPoint) {
 
+      const beforeHp = this.basicStatus.hp;
       this.lebel ++;
-      this.lebelUpAction();
+      this.lebelUpAction(beforeHp);
 
       while (this.getReqLebelUpExPoint() < 0) {
+        const beforeHp = this.basicStatus.hp;
         this.lebel ++;
-        this.lebelUpAction();
+        this.lebelUpAction(beforeHp);
       }
 
     }
@@ -184,7 +186,11 @@ export abstract class Pokemon {
     this._exPoint =beforeEvolvePokemon.exPoint;
     this._moveList =beforeEvolvePokemon.moveList;
     this._statusAilment = [beforeEvolvePokemon.statusAilment];
-    this._remainingHp =beforeEvolvePokemon.remainingHp;
+
+    // 現在のHPに合わせてレベルアップ後のHPを調整
+    if (this.statusAilment?.name !== 'ひんし') {
+      this._remainingHp = this.calculateRemainingHp('add', this.basicStatus.hp - beforeEvolvePokemon.remainingHp);
+    }
   }
 
   resetStatusAilment(): void {
@@ -213,9 +219,16 @@ export abstract class Pokemon {
   }
 
   /**
-   * レベルが上がったときの処理（新しい技を覚える）
+   * レベルが上がったときの処理
    */
-  lebelUpAction(): void {
+  protected lebelUpAction(beforeHp: number): void {
+
+    // 現在のHPに合わせてレベルアップ後のHPを調整
+    if (this.statusAilment?.name !== 'ひんし') {
+      this.remainingHp = this.calculateRemainingHp('add', this.basicStatus.hp - beforeHp);
+    }
+
+    // 習得できるわざがあるかの確認
     const requestableMoveList: IMove[] = this.moveListToRequest.filter(moveList => moveList.lebel === this.lebel);
     if (requestableMoveList.length >= 1) {
       requestableMoveList.forEach(requestableMove => this.requestNewMove(requestableMove));
