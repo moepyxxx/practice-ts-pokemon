@@ -1,8 +1,8 @@
 {
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "prod": "webpack --config webpack.prod.js",
-    "dev": "webpack"
+    "dev": "webpack",
+    "test": "jest"
   },
   "keywords": [],
   "author": "",
