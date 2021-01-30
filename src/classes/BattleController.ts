@@ -6,8 +6,6 @@ import { Achamo } from '../classes/Pokemon/Achamo';
 import { Mizugorou } from '../classes/Pokemon/Mizugorou';
 import { Kimori } from '../classes/Pokemon/Kimori';
 import { Controller } from './Controller';
-import { MOVE_CLASS_LIST } from '../utils/datas/moveClassDatas';
-import { Nakigoe } from './Move/Nakigoe';
 
 export class BattleController {
 
@@ -38,22 +36,6 @@ export class BattleController {
     this.setBattleSystem();
   }
 
-  // setRunAction() {
-  //   const trigger = document.querySelector('#a-nigeru') as HTMLButtonElement;
-  //   trigger.addEventListener('click', (e) => {
-  //     e.preventDefault();
-
-  //     if (this.checkRun()) {
-  //       this.controller.view.hideBattleField();
-  //       this.controller.view.showMainField();
-  //       this.controller.view.renderSerif(`${this.enemy.name}からにげることができた`);
-  //     } else {
-  //       this.runCount++;
-  //       this.controller.view.renderSerif(`${this.enemy.name}からにげられなかった`);
-  //     }
-  //   });
-  // }
-
   setBattleSystem() {
 
     const addedTrigger = document.querySelector('#action_field') as HTMLButtonElement;
@@ -68,10 +50,16 @@ export class BattleController {
     const actionTriggers = document.querySelectorAll<HTMLButtonElement>('.action_class');
     const runTrigger = document.querySelector('#a-nigeru') as HTMLButtonElement;
 
+    // たたかうポケモンをセット
+    interface MoveActionSet {
+      pokemon: Pokemon,
+      enemy: Pokemon,
+      move: Move
+    };
+    const actionPokemons: MoveActionSet[] = [];
+
     // 敵ポケモンがわざを選択
     const enemyAiMove: Move = this.selectAiMove(this.enemy);
-    let enemyDamage: number = 0;
-    let pokemonDamage: number = 0;
 
     // たたかうを選択したとき
     actionTriggers.forEach(trigger => {
@@ -79,22 +67,37 @@ export class BattleController {
         e.preventDefault();
 
         const index = Number((<HTMLButtonElement>e.target).id.slice(-1));
-        const pokemonMove: Move = this.pokemon.moveList[index].move;
+        const pokemonMove: Move = this.pokemon.moveList[index].move;        
 
-        if (this.checkFirstMove(pokemonMove, enemyAiMove)) {
-          enemyDamage = this.tatakauAction(this.pokemon, this.enemy, pokemonMove);
-          pokemonDamage = this.tatakauAction(this.enemy, this.pokemon, enemyAiMove);
-        } else {
-          pokemonDamage = this.tatakauAction(this.enemy, this.pokemon, enemyAiMove);
-          enemyDamage = this.tatakauAction(this.pokemon, this.enemy, pokemonMove);
+        const pokemonMoveData: MoveActionSet = {
+          pokemon: this.pokemon,
+          enemy: this.enemy,
+          move: pokemonMove
         }
+        const enemyMoveData: MoveActionSet = {
+          pokemon: this.enemy,
+          enemy: this.pokemon,
+          move: enemyAiMove
+        }
+
+        actionPokemons.push(pokemonMoveData);
+        actionPokemons.push(enemyMoveData);
+
+        const checkedMoveOrderPokemons = this.checkMoveOrder(actionPokemons);
+        this.actionExecute(checkedMoveOrderPokemons);
+
         // ステータス確認用
-        // console.log(enemyDamage);
-        // console.log(this.pokemon.battleStatusRank);
-        // console.log(this.pokemon.statusAilment);
+        // console.log(this.pokemon.basicStatus);
         // console.log(pokemonDamage);
-        // console.log(this.enemy.battleStatusRank);
-        // console.log(this.enemy.statusAilment);
+        // // console.log(this.pokemon.battleStatusRank);
+        // console.log(this.pokemon.statusAilment?.name);
+        // console.log(this.pokemon.remainingHp);
+
+        // console.log(this.pokemon.basicStatus);
+        // console.log(enemyDamage);
+        // // console.log(this.enemy.battleStatusRank);
+        // console.log(this.enemy.statusAilment?.name);
+        // console.log(this.enemy.remainingHp);
       });
     });
 
@@ -109,16 +112,85 @@ export class BattleController {
       } else {
         this.runCount++;
         this.controller.view.renderSerif(`${this.enemy.name}からにげられなかった`);
-        pokemonDamage = this.tatakauAction(this.enemy, this.pokemon, enemyAiMove);
+
+        const enemyMoveData: MoveActionSet = {
+          pokemon: this.enemy,
+          enemy: this.pokemon,
+          move: enemyAiMove
+        }
+
+        actionPokemons.push(enemyMoveData);
+
+        const checkedMoveOrderPokemons = this.checkMoveOrder(actionPokemons);
+        this.actionExecute(checkedMoveOrderPokemons);
       }
       // ステータス確認用
-      // console.log(enemyDamage);
+      // console.log(this.pokemon.basicStatus);
+      // console.log(pokemonDamage);
       // console.log(this.pokemon.battleStatusRank);
       // console.log(this.pokemon.statusAilment);
-      // console.log(pokemonDamage);
+      // console.log(this.pokemon.remainingHp);
+      // console.log(this.pokemon.statusAilment);
+      // console.log(this.pokemon.basicStatus);
+      // console.log(enemyDamage);
       // console.log(this.enemy.battleStatusRank);
       // console.log(this.enemy.statusAilment);
+      // console.log(this.pokemon.remainingHp);
+      // console.log(this.pokemon.statusAilment);
     });
+  }
+
+  actionExecute(pokemonMoves: { pokemon: Pokemon, enemy: Pokemon, move: Move }[]): void {
+
+    pokemonMoves.forEach((moveAction) => {
+      const damage = this.tatakauAction(moveAction.pokemon, moveAction.enemy, moveAction.move);
+      moveAction.enemy.calculateRemainingHp('sub', damage);
+
+      if (this.checkPokemonSaFainting(moveAction.enemy)) {
+        this.controller.view.hideBattleField();
+        this.controller.view.showMainField();
+        this.controller.view.renderSerif(`${moveAction.enemy.name}はたおれた。hpがゼロになったので、バトルが終了した！`);
+      }
+    });
+    pokemonMoves.splice(0);
+
+  }
+
+  /**
+   * たたかうアクションを選択したポケモンたちのわざだし順番をチェック
+   */
+  checkMoveOrder(pokemonMove: { pokemon: Pokemon, enemy: Pokemon, move: Move }[]): { pokemon: Pokemon, enemy: Pokemon, move: Move }[] {
+
+    return pokemonMove.sort((next, cur) => {
+
+      // わざの優先度を確認
+      if (next.move.priority !== cur.move.priority) {
+        if (next.move.priority < cur.move.priority) return 1;
+        if (next.move.priority > cur.move.priority) return -1;
+      }
+
+      // ポケモンのすばやさを確認
+      if (next.pokemon.calculateBasicStatus(true).rapidity !== cur.pokemon.calculateBasicStatus(true).rapidity) {
+        if (next.pokemon.calculateBasicStatus(true).rapidity < cur.pokemon.calculateBasicStatus(true).rapidity) return 1;
+        if (next.pokemon.calculateBasicStatus(true).rapidity > cur.pokemon.calculateBasicStatus(true).rapidity) return -1;
+      }
+
+      // ランダム確認
+      const randomNum = Math.floor(Math.random() * 2);
+      if (randomNum === 0) {
+        return 1;
+      } else {
+        return -1;
+      }
+
+    });
+  }
+
+  checkPokemonSaFainting(pokemon: Pokemon): boolean {
+    if (pokemon.statusAilment?.name === 'ひんし') {
+      return true;
+    }
+    return false;
   }
 
   tatakauAction(atkPokemon: Pokemon, defPokemon: Pokemon, move: Move): number {

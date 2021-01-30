@@ -5,6 +5,7 @@ import { SaPoison } from '../../classes/StatusAilment/SaPoison';
 import { SaFreeze } from '../../classes/StatusAilment/SaFreeze';
 import { SaSleep } from '../../classes/StatusAilment/SaSleep';
 import { SaBurn } from '../../classes/StatusAilment/SaBurn';
+import { SaFainting } from '../../classes/StatusAilment/SaFainting';
 
 export const STATUS_AILMENT_CLASS_LIST: {
   [key: string]: StatusAilment;
@@ -15,5 +16,5 @@ export const STATUS_AILMENT_CLASS_LIST: {
   'saPoison': new SaPoison(),
   'saBadPoison': new SaBadPoison(),
   'saSleep': new SaSleep(),
-  'saFainting': new SaParalysis()
+  'saFainting': new SaFainting()
 }

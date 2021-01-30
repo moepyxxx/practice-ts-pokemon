@@ -42,24 +42,14 @@ export class Juputoru extends Pokemon {
     SPprotected: 65,
     rapidity: 95
   };
-  _lebel: number;
-  _exPoint: number;
-  _moveList: IMove[];
-
+  _remainingHp: number;
+  
   constructor(_beforeEvole: Pokemon | null, _nickname?: string) {
     super(_beforeEvole, _nickname);
 
     if (this._beforeEvole) {
       this.render(`${this.name}に進化した。`);
-
-      this._nickname = this._beforeEvole.nickname;
-      this._basicEffortStatus = this._beforeEvole.basicEffortStatus;
-      this._basicIndividualStatus = this._beforeEvole.basicIndividualStatus;
-
-      this._lebel = this._beforeEvole.lebel;
-      this._exPoint = this._beforeEvole.exPoint;
-      this._moveList = this._beforeEvole.moveList;
-      this._statusAilment = [this._beforeEvole.statusAilment];
+      this.takeOverPokemonData(this._beforeEvole);
     } else {
       this._lebel = randomSingleInArray<number>(this._initialLebel);
       this._exPoint = Math.pow(this.lebel, 3);
@@ -67,6 +57,7 @@ export class Juputoru extends Pokemon {
     }
 
     this._basicStatus = this.calculateBasicStatus();
+    this._remainingHp = this.basicStatus.hp;
   }
 
   protected evolve(): Pokemon {
