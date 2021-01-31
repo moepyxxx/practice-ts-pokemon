@@ -1,22 +1,22 @@
-import { Pokemon } from '../classes/Pokemon';
-import { Move } from '../classes/Move';
-import { Group } from '../classes/Group';
-import { ownPokemons } from '../utils/interface.general';
-import { Achamo } from '../classes/Pokemon/Achamo';
-import { Mizugorou } from '../classes/Pokemon/Mizugorou';
-import { Kimori } from '../classes/Pokemon/Kimori';
-import { Controller } from './Controller';
+import { Pokemon } from '../../classes/Pokemon';
+import { Move } from '../../classes/Move';
+import { Group } from '../../classes/Group';
+import { ownPokemons } from '../../utils/interface.general';
+import { Achamo } from '../../classes/Pokemon/Achamo';
+import { Mizugorou } from '../../classes/Pokemon/Mizugorou';
+import { Kimori } from '../../classes/Pokemon/Kimori';
+import { BattleView } from '../../classes/View/BattleView';
 
 export class BattleController {
 
+  public view: BattleView;
   public enemy: Pokemon;
   public ownPokemons: ownPokemons[];
   public pokemon: Pokemon;
-  public controller: Controller;
   public runCount: number = 0;
   protected damageCorrection: number = 1;
 
-  constructor(_ownPokemons: ownPokemons[], _controller: Controller) {
+  constructor(_ownPokemons: ownPokemons[]) {
     this.ownPokemons = _ownPokemons;
     this.pokemon = this.ownPokemons[0].pokemon;
     
@@ -28,10 +28,10 @@ export class BattleController {
       this.enemy = new Achamo(null);
     }
 
-    this.controller = _controller;
+    this.view = BattleView.getInstance();
 
-    this.controller.view.renderSerif(`あ、${this.enemy.name}があらわれた！`);
-    this.controller.view.renderSerif(`いけ、${this.pokemon.name}！`);
+    this.view.renderSerif(`あ、${this.enemy.name}があらわれた！`);
+    this.view.renderSerif(`いけ、${this.pokemon.name}！`);
 
     this.setBattleSystem();
   }
@@ -106,12 +106,12 @@ export class BattleController {
       e.preventDefault();
 
       if (this.checkRun()) {
-        this.controller.view.hideBattleField();
-        this.controller.view.showMainField();
-        this.controller.view.renderSerif(`${this.enemy.name}からにげることができた`);
+        this.view.hideBattleField();
+        this.view.showMainField();
+        this.view.renderSerif(`${this.enemy.name}からにげることができた`);
       } else {
         this.runCount++;
-        this.controller.view.renderSerif(`${this.enemy.name}からにげられなかった`);
+        this.view.renderSerif(`${this.enemy.name}からにげられなかった`);
 
         const enemyMoveData: MoveActionSet = {
           pokemon: this.enemy,
@@ -147,9 +147,9 @@ export class BattleController {
       moveAction.enemy.calculateRemainingHp('sub', damage);
 
       if (this.checkPokemonSaFainting(moveAction.enemy)) {
-        this.controller.view.hideBattleField();
-        this.controller.view.showMainField();
-        this.controller.view.renderSerif(`${moveAction.enemy.name}はたおれた。hpがゼロになったので、バトルが終了した！`);
+        this.view.hideBattleField();
+        this.view.showMainField();
+        this.view.renderSerif(`${moveAction.enemy.name}はたおれた。hpがゼロになったので、バトルが終了した！`);
       }
     });
     pokemonMoves.splice(0);
@@ -194,7 +194,7 @@ export class BattleController {
   }
 
   checkMoveAction(atkPokemon: Pokemon, defPokemon: Pokemon, move: Move): number {
-    this.controller.view.renderSerif(`${atkPokemon.name}は${defPokemon.name}に、${move.name}した`)
+    this.view.renderSerif(`${atkPokemon.name}は${defPokemon.name}に、${move.name}した`)
 
     let damage = 0;
 
@@ -222,16 +222,16 @@ export class BattleController {
     const isHit: boolean = this.checkIsHit(move.accuracy);
 
     if (!isHit) {
-      this.controller.view.renderSerif(`しかし、${defPokemon.name}にはあたらなかった`);
+      this.view.renderSerif(`しかし、${defPokemon.name}にはあたらなかった`);
       return damage;
     }
 
     if (move.species === '変化') {
       const resultMsg = move.effects(atkPokemon, defPokemon);
-      this.controller.view.renderSerif(resultMsg);
+      this.view.renderSerif(resultMsg);
       return damage;
     } else {
-      this.controller.view.renderSerif(groupCompMessage);
+      this.view.renderSerif(groupCompMessage);
 
       // 急所判定
       let isCritical: boolean = false;
@@ -239,7 +239,7 @@ export class BattleController {
         isCritical = this.checkIsCritical(move.criticalRank);
       }
       if (isCritical) {
-        this.controller.view.renderSerif('急所に当たった');
+        this.view.renderSerif('急所に当たった');
       }
 
       // 乱数補正値の計算
@@ -259,7 +259,7 @@ export class BattleController {
       
       damage = this.calculateStatusAilmentDamage(atkPokemon, defPokemon, move, damage);
 
-      this.controller.view.renderSerif(`${defPokemon.name}に${damage}のダメージ！`);
+      this.view.renderSerif(`${defPokemon.name}に${damage}のダメージ！`);
 
       this.damageCorrection = 1;
       return damage;

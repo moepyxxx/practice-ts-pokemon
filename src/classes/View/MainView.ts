@@ -1,16 +1,12 @@
-export class View {
+export class MainView {
   public serifTarget: HTMLElement = document.querySelector('#speech_field') as HTMLUListElement;
-  private initialField: HTMLElement;
-  private mainField: HTMLElement;
-  private battleField: HTMLElement;
-  private statusField: HTMLElement;
-  private static _instance: View;
+  private initialField: HTMLElement = document.querySelector('#initial_field') as HTMLUListElement;
+  private mainField: HTMLElement = document.querySelector('#main_field') as HTMLUListElement;
+  private battleField: HTMLElement = document.querySelector('#battle_field') as HTMLUListElement;
+  private statusField: HTMLElement = document.querySelector('#status_field') as HTMLUListElement;
+  private static _instance: MainView;
   
   private constructor() {
-    this.mainField = document.querySelector('#main_field') as HTMLUListElement;
-    this.initialField = document.querySelector('#initial_field') as HTMLUListElement;
-    this.battleField = document.querySelector('#battle_field') as HTMLUListElement;
-    this.statusField = document.querySelector('#status_field') as HTMLUListElement;
     this.mainField.style.display = 'none';
     this.battleField.style.display = 'none';
     this.statusField.style.display = 'none';
@@ -57,9 +53,9 @@ export class View {
     this.statusField.style.display = 'block';
   }
 
-  public static getInstance(): View {
+  public static getInstance(): MainView {
     if (!this._instance) {
-      this._instance = new View();
+      this._instance = new MainView();
     }
     return this._instance;
   }

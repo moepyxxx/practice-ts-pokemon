@@ -1,5 +1,5 @@
-import { Controller } from './classes/Controller';
-const controller = Controller.getInstance();
+import { MainController } from './classes/Controller/MainController';
+const mainController = MainController.getInstance();
 
 // const trigger = document.querySelector('#trigger') as HTMLButtonElement;
 // trigger.addEventListener('click', () => {
