@@ -6,8 +6,6 @@ import { Achamo } from '../classes/Pokemon/Achamo';
 import { Mizugorou } from '../classes/Pokemon/Mizugorou';
 import { Kimori } from '../classes/Pokemon/Kimori';
 import { Controller } from './Controller';
-import { MOVE_CLASS_LIST } from '../utils/datas/moveClassDatas';
-import { Nakigoe } from './Move/Nakigoe';
 
 export class BattleController {
 
@@ -184,13 +182,8 @@ export class BattleController {
         <number>move.power,
         this.damageCorrection
       );
-
-      // やけどをおったポケモンの攻撃の場合は、ダメージが半減する
-      if (atkPokemon.statusAilment && move.species === '物理') {
-        damage = atkPokemon.statusAilment.name === 'やけど'
-          ? damage *= 0.5
-          : damage;
-      }
+      
+      damage = this.calculateStatusAilmentDamage(atkPokemon, defPokemon, move, damage);
 
       this.controller.view.renderSerif(`${defPokemon.name}に${damage}のダメージ！`);
 
@@ -244,6 +237,9 @@ export class BattleController {
     }
   }
 
+  /**
+   * 以下、すべてダメージ計算処理関係のメソッド
+   */
   calculateTypeMatchCor(moveGroup: Group, atkPokemonGroups: Group[]): number {
     let damageCorrection = this.damageCorrection;
     if (atkPokemonGroups.includes(moveGroup)) {
@@ -254,6 +250,18 @@ export class BattleController {
 
   calculateRandomNumCor(): number {
     return (this.damageCorrection * (Math.floor(Math.random() * 16) + 85)) / 100;
+  }
+
+  calculateStatusAilmentDamage(atkPokemon: Pokemon, defPokemon: Pokemon, move: Move, damage: number): number {
+  
+    // やけど ... やけどをおったポケモンの攻撃の場合は、ダメージが半減する
+    if (atkPokemon.statusAilment && move.species === '物理') {
+      damage = atkPokemon.statusAilment.name === 'やけど'
+        ? damage *= 0.5
+        : damage;
+    }
+
+    return damage;
   }
 
   checkIsCritical(moveCriticalRank: number): boolean {
