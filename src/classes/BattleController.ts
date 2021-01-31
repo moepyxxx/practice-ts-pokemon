@@ -266,33 +266,6 @@ export class BattleController {
     }
   }
 
-  checkFirstMove(pokemonMove: Move, enemyAiMove: Move): boolean {
-
-    // 優先度の比較
-    if (pokemonMove.priority > enemyAiMove.priority) {
-      return true;
-    } else if (enemyAiMove.priority > pokemonMove.priority) {
-      return false;
-    }
-
-    // すばやさの比較
-    const pokemonRapidity = this.pokemon.calculateBasicStatus(true).rapidity;
-    const enemyRapidity = this.enemy.calculateBasicStatus(true).rapidity;
-    if (pokemonRapidity > enemyRapidity) {
-      return true;
-    } else if (enemyRapidity > pokemonRapidity) {
-      return false;
-    }
-
-    // ランダム比較
-    const randomNumber = Math.floor(Math.random() * 2);
-    if (randomNumber === 0) {
-      return true;
-    } else {
-      return false;
-    }
-  }
-
   selectAiMove(pokemon: Pokemon): Move {
     const randomNumber: number = Math.floor(Math.random() * 3);
     return pokemon.moveList[randomNumber].move;
