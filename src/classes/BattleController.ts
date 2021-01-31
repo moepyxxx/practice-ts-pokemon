@@ -143,7 +143,7 @@ export class BattleController {
   actionExecute(pokemonMoves: { pokemon: Pokemon, enemy: Pokemon, move: Move }[]): void {
 
     pokemonMoves.forEach((moveAction) => {
-      const damage = this.tatakauAction(moveAction.pokemon, moveAction.enemy, moveAction.move);
+      const damage = this.checkMoveAction(moveAction.pokemon, moveAction.enemy, moveAction.move);
       moveAction.enemy.calculateRemainingHp('sub', damage);
 
       if (this.checkPokemonSaFainting(moveAction.enemy)) {
@@ -193,7 +193,7 @@ export class BattleController {
     return false;
   }
 
-  tatakauAction(atkPokemon: Pokemon, defPokemon: Pokemon, move: Move): number {
+  checkMoveAction(atkPokemon: Pokemon, defPokemon: Pokemon, move: Move): number {
     this.controller.view.renderSerif(`${atkPokemon.name}は${defPokemon.name}に、${move.name}した`)
 
     let damage = 0;
@@ -219,9 +219,9 @@ export class BattleController {
     }
 
     // 命中判定
-    const hit: boolean = this.checkHit(move.accuracy);
+    const isHit: boolean = this.checkIsHit(move.accuracy);
 
-    if (!hit) {
+    if (!isHit) {
       this.controller.view.renderSerif(`しかし、${defPokemon.name}にはあたらなかった`);
       return damage;
     }
@@ -243,10 +243,10 @@ export class BattleController {
       }
 
       // 乱数補正値の計算
-      this.calculateRandomNum();
+      this.damageCorrection = this.calculateRandomNumCor();
 
       // タイプ一致補正値の計算
-      this.calculateTypeMatch(move.type, atkPokemon.groups);
+      this.damageCorrection = this.calculateTypeMatchCor(move.type, atkPokemon.groups);
 
 
       damage = this.calculateDamage(
@@ -256,45 +256,13 @@ export class BattleController {
         <number>move.power,
         this.damageCorrection
       );
-
-      // やけどをおったポケモンの攻撃の場合は、ダメージが半減する
-      if (atkPokemon.statusAilment && move.species === '物理') {
-        damage = atkPokemon.statusAilment.name === 'やけど'
-          ? damage *= 0.5
-          : damage;
-      }
+      
+      damage = this.calculateStatusAilmentDamage(atkPokemon, defPokemon, move, damage);
 
       this.controller.view.renderSerif(`${defPokemon.name}に${damage}のダメージ！`);
 
       this.damageCorrection = 1;
       return damage;
-    }
-  }
-
-  checkFirstMove(pokemonMove: Move, enemyAiMove: Move): boolean {
-
-    // 優先度の比較
-    if (pokemonMove.priority > enemyAiMove.priority) {
-      return true;
-    } else if (enemyAiMove.priority > pokemonMove.priority) {
-      return false;
-    }
-
-    // すばやさの比較
-    const pokemonRapidity = this.pokemon.calculateBasicStatus(true).rapidity;
-    const enemyRapidity = this.enemy.calculateBasicStatus(true).rapidity;
-    if (pokemonRapidity > enemyRapidity) {
-      return true;
-    } else if (enemyRapidity > pokemonRapidity) {
-      return false;
-    }
-
-    // ランダム比較
-    const randomNumber = Math.floor(Math.random() * 2);
-    if (randomNumber === 0) {
-      return true;
-    } else {
-      return false;
     }
   }
 
@@ -316,14 +284,31 @@ export class BattleController {
     }
   }
 
-  calculateTypeMatch(moveGroup: Group, atkPokemonGroups: Group[]): void {
+  /**
+   * 以下、すべてダメージ計算処理関係のメソッド
+   */
+  calculateTypeMatchCor(moveGroup: Group, atkPokemonGroups: Group[]): number {
+    let damageCorrection = this.damageCorrection;
     if (atkPokemonGroups.includes(moveGroup)) {
-      this.damageCorrection *= 1.5;
+      damageCorrection *= 1.5;
     }
+    return damageCorrection;
   }
 
-  calculateRandomNum(): void {
-    this.damageCorrection = (this.damageCorrection * (Math.floor(Math.random() * 16) + 85)) / 100;
+  calculateRandomNumCor(): number {
+    return (this.damageCorrection * (Math.floor(Math.random() * 16) + 85)) / 100;
+  }
+
+  calculateStatusAilmentDamage(atkPokemon: Pokemon, defPokemon: Pokemon, move: Move, damage: number): number {
+  
+    // やけど ... やけどをおったポケモンの攻撃の場合は、ダメージが半減する
+    if (atkPokemon.statusAilment && move.species === '物理') {
+      damage = atkPokemon.statusAilment.name === 'やけど'
+        ? damage *= 0.5
+        : damage;
+    }
+
+    return damage;
   }
 
   checkIsCritical(moveCriticalRank: number): boolean {
@@ -379,7 +364,7 @@ export class BattleController {
     return damageCompMessage;
   }
 
-  checkHit(accuracy: number): boolean {
+  checkIsHit(accuracy: number): boolean {
     if (!accuracy) {
       return true;
     }
