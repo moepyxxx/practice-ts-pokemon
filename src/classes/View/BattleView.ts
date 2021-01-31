@@ -1,12 +1,11 @@
 export class BattleView {
   public serifTarget: HTMLElement = document.querySelector('#speech_field') as HTMLUListElement;
-  private mainField: HTMLElement;
-  private battleField: HTMLElement;
+  private mainField: HTMLElement = document.querySelector('#main_field') as HTMLUListElement;;
+  private battleField: HTMLElement = document.querySelector('#battle_field') as HTMLUListElement;;
   private static _instance: BattleView;
   
   private constructor() {
-    this.mainField = document.querySelector('#main_field') as HTMLUListElement;
-    this.battleField = document.querySelector('#battle_field') as HTMLUListElement;
+
   }
 
   renderSerif(speechText: string) {
