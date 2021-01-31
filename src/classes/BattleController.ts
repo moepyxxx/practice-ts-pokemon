@@ -171,10 +171,10 @@ export class BattleController {
       }
 
       // 乱数補正値の計算
-      this.calculateRandomNum();
+      this.damageCorrection = this.calculateRandomNumCor();
 
       // タイプ一致補正値の計算
-      this.calculateTypeMatch(move.type, atkPokemon.groups);
+      this.damageCorrection = this.calculateTypeMatchCor(move.type, atkPokemon.groups);
 
 
       damage = this.calculateDamage(
@@ -244,14 +244,16 @@ export class BattleController {
     }
   }
 
-  calculateTypeMatch(moveGroup: Group, atkPokemonGroups: Group[]): void {
+  calculateTypeMatchCor(moveGroup: Group, atkPokemonGroups: Group[]): number {
+    let damageCorrection = this.damageCorrection;
     if (atkPokemonGroups.includes(moveGroup)) {
-      this.damageCorrection *= 1.5;
+      damageCorrection *= 1.5;
     }
+    return damageCorrection;
   }
 
-  calculateRandomNum(): void {
-    this.damageCorrection = (this.damageCorrection * (Math.floor(Math.random() * 16) + 85)) / 100;
+  calculateRandomNumCor(): number {
+    return (this.damageCorrection * (Math.floor(Math.random() * 16) + 85)) / 100;
   }
 
   checkIsCritical(moveCriticalRank: number): boolean {
