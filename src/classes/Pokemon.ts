@@ -12,11 +12,12 @@ export abstract class Pokemon {
 
   protected abstract _groups: Group[];
 
-  protected abstract _moveList: IMove[];
   protected abstract _moveListToRequest: IMove[];
   protected abstract _initialLebel: number[];
-  protected abstract _lebel: number;
-  protected abstract _exPoint: number;
+
+  _lebel: number = 0;
+  _exPoint: number = 0;
+  _moveList: IMove[] = [];
 
   protected abstract _basicCategoryStatus: basicStatus;
   protected _basicIndividualStatus: basicStatus;
@@ -47,6 +48,8 @@ export abstract class Pokemon {
     accuracy: 0,
     evasion: 0,
   }
+
+  protected abstract _remainingHp: number;
 
   protected _statusAilment: StatusAilment[] = [];
 
@@ -109,12 +112,14 @@ export abstract class Pokemon {
 
     if (this.getReqLebelUpExPoint() <= this.exPoint) {
 
+      const beforeHp = this.basicStatus.hp;
       this.lebel ++;
-      this.lebelUpAction();
+      this.lebelUpAction(beforeHp);
 
       while (this.getReqLebelUpExPoint() < 0) {
+        const beforeHp = this.basicStatus.hp;
         this.lebel ++;
-        this.lebelUpAction();
+        this.lebelUpAction(beforeHp);
       }
 
     }
@@ -164,6 +169,34 @@ export abstract class Pokemon {
     return this._statusAilment[0] ?? null;
   }
 
+  get remainingHp() {
+    return this._remainingHp;
+  }
+
+  set remainingHp(number) {
+    this._remainingHp = number;
+  }
+
+  takeOverPokemonData(beforeEvolvePokemon: Pokemon) {
+    this._nickname = beforeEvolvePokemon.nickname;
+    this._basicEffortStatus =beforeEvolvePokemon.basicEffortStatus;
+    this._basicIndividualStatus =beforeEvolvePokemon.basicIndividualStatus;
+
+    this._lebel =beforeEvolvePokemon.lebel;
+    this._exPoint =beforeEvolvePokemon.exPoint;
+    this._moveList =beforeEvolvePokemon.moveList;
+    this._statusAilment = [beforeEvolvePokemon.statusAilment];
+
+    // 現在のHPに合わせてレベルアップ後のHPを調整
+    if (this.statusAilment?.name !== 'ひんし') {
+      this._remainingHp = this.calculateRemainingHp('add', this.basicStatus.hp - beforeEvolvePokemon.remainingHp);
+    }
+  }
+
+  resetStatusAilment(): void {
+    this._statusAilment = [];
+  }
+
   setStatusAilment(statusAilment: StatusAilment): string {
     if (statusAilment === STATUS_AILMENT_CLASS_LIST.saFainting || this._statusAilment.length === 0) {
       this._statusAilment = [];
@@ -186,13 +219,50 @@ export abstract class Pokemon {
   }
 
   /**
-   * レベルが上がったときの処理（新しい技を覚える）
+   * レベルが上がったときの処理
    */
-  lebelUpAction(): void {
+  protected lebelUpAction(beforeHp: number): void {
+
+    // 現在のHPに合わせてレベルアップ後のHPを調整
+    if (this.statusAilment?.name !== 'ひんし') {
+      this.remainingHp = this.calculateRemainingHp('add', this.basicStatus.hp - beforeHp);
+    }
+
+    // 習得できるわざがあるかの確認
     const requestableMoveList: IMove[] = this.moveListToRequest.filter(moveList => moveList.lebel === this.lebel);
     if (requestableMoveList.length >= 1) {
       requestableMoveList.forEach(requestableMove => this.requestNewMove(requestableMove));
     }
+  }
+
+
+  /**
+   * 残りhpの計算
+   */
+  calculateRemainingHp(effect: 'saFainting' | 'sub' | 'add' | 'reset', number: number): number {
+    switch (effect) {
+      case 'add':
+        this.remainingHp += number;
+        break;
+      case 'sub':
+        this.remainingHp -= number;
+        break;
+      case 'reset':
+        this.remainingHp = this.basicStatus.hp;
+        this.resetStatusAilment();
+        break;
+      case 'saFainting':
+        this.remainingHp = 0;
+        this.remainingHp = this.remainingHp > this.basicStatus.hp 
+          ? this.basicStatus.hp
+          : this.remainingHp;
+    }
+
+    if (this.remainingHp <= 0) {
+      this.setStatusAilment(STATUS_AILMENT_CLASS_LIST.saFainting);
+      this.remainingHp = 0;
+    }
+    return this.remainingHp;
   }
 
 

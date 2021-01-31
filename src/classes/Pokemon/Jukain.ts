@@ -44,9 +44,7 @@ export class Jukain extends Pokemon {
     SPprotected: 85,
     rapidity: 145
   };
-  _lebel: number;
-  _exPoint: number;
-  _moveList: IMove[];
+  _remainingHp: number;
 
   constructor(_beforeEvole: Pokemon | null, _nickname?: string) {
     super(_beforeEvole, _nickname);
@@ -62,6 +60,7 @@ export class Jukain extends Pokemon {
       this._exPoint = this._beforeEvole.exPoint;
       this._moveList = this._beforeEvole.moveList;
       this._statusAilment = [this._beforeEvole.statusAilment];
+      this._remainingHp = this._beforeEvole.remainingHp;
     } else {
       this._lebel = randomSingleInArray<number>(this._initialLebel);
       this._exPoint = Math.pow(this.lebel, 3);
@@ -69,6 +68,7 @@ export class Jukain extends Pokemon {
     }
 
     this._basicStatus = this.calculateBasicStatus();
+    this._remainingHp = this.basicStatus.hp;
   }
 
   protected evolve(): Pokemon {
