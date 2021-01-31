@@ -188,7 +188,7 @@ export class MainController {
   }
 
   buttle() {
-    const battleController = new BattleController(this.pokemonsOnHave, this);
+    const battleController = new BattleController(this.pokemonsOnHave);
   }
 
   public static getInstance(): MainController {
