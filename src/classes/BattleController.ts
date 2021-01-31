@@ -82,11 +82,11 @@ export class BattleController {
         const pokemonMove: Move = this.pokemon.moveList[index].move;
 
         if (this.checkFirstMove(pokemonMove, enemyAiMove)) {
-          enemyDamage = this.tatakauAction(this.pokemon, this.enemy, pokemonMove);
-          pokemonDamage = this.tatakauAction(this.enemy, this.pokemon, enemyAiMove);
+          enemyDamage = this.checkMoveAction(this.pokemon, this.enemy, pokemonMove);
+          pokemonDamage = this.checkMoveAction(this.enemy, this.pokemon, enemyAiMove);
         } else {
-          pokemonDamage = this.tatakauAction(this.enemy, this.pokemon, enemyAiMove);
-          enemyDamage = this.tatakauAction(this.pokemon, this.enemy, pokemonMove);
+          pokemonDamage = this.checkMoveAction(this.enemy, this.pokemon, enemyAiMove);
+          enemyDamage = this.checkMoveAction(this.pokemon, this.enemy, pokemonMove);
         }
         // ステータス確認用
         // console.log(enemyDamage);
@@ -109,7 +109,7 @@ export class BattleController {
       } else {
         this.runCount++;
         this.controller.view.renderSerif(`${this.enemy.name}からにげられなかった`);
-        pokemonDamage = this.tatakauAction(this.enemy, this.pokemon, enemyAiMove);
+        pokemonDamage = this.checkMoveAction(this.enemy, this.pokemon, enemyAiMove);
       }
       // ステータス確認用
       // console.log(enemyDamage);
@@ -121,7 +121,7 @@ export class BattleController {
     });
   }
 
-  tatakauAction(atkPokemon: Pokemon, defPokemon: Pokemon, move: Move): number {
+  checkMoveAction(atkPokemon: Pokemon, defPokemon: Pokemon, move: Move): number {
     this.controller.view.renderSerif(`${atkPokemon.name}は${defPokemon.name}に、${move.name}した`)
 
     let damage = 0;
