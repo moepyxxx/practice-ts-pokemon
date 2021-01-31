@@ -1,19 +1,19 @@
-import { getPokemon, checkImportText } from '../utils/functions';
-import { POKEMON_CLASS_LIST } from '../utils/datas/pokemonClassDatas';
-import { Pokemon } from '../classes/Pokemon';
-import { View } from '../classes/View';
-import { ownPokemons } from '../utils/interface.general';
-import { BattleController } from '../classes/BattleController';
+import { getPokemon, checkImportText } from '../../utils/functions';
+import { POKEMON_CLASS_LIST } from '../../utils/datas/pokemonClassDatas';
+import { Pokemon } from '../../classes/Pokemon';
+import { MainView } from '../../classes/View/MainView';
+import { ownPokemons } from '../../utils/interface.general';
+import { BattleController } from '../../classes/Controller/BattleController';
 
-export class Controller {
-  public view: View;
+export class MainController {
+  public view: MainView;
   public pokemonsAllHave: ownPokemons[] = [];
   public pokemonsOnHave: ownPokemons[] = [];
   public trigger = <HTMLButtonElement>document.querySelector('#trigger');
-  private static _instance: Controller;
+  private static _instance: MainController;
 
   private constructor() {
-    this.view = View.getInstance();
+    this.view = MainView.getInstance();
     this.setSelectPokemonBtn();
   }
 
@@ -191,9 +191,9 @@ export class Controller {
     const battleController = new BattleController(this.pokemonsOnHave, this);
   }
 
-  public static getInstance(): Controller {
+  public static getInstance(): MainController {
     if (!this._instance) {
-      this._instance = new Controller();
+      this._instance = new MainController();
     }
     return this._instance;
   }

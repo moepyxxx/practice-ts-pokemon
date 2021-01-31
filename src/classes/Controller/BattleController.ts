@@ -1,22 +1,22 @@
-import { Pokemon } from '../classes/Pokemon';
-import { Move } from '../classes/Move';
-import { Group } from '../classes/Group';
-import { ownPokemons } from '../utils/interface.general';
-import { Achamo } from '../classes/Pokemon/Achamo';
-import { Mizugorou } from '../classes/Pokemon/Mizugorou';
-import { Kimori } from '../classes/Pokemon/Kimori';
-import { Controller } from './Controller';
+import { Pokemon } from '../../classes/Pokemon';
+import { Move } from '../../classes/Move';
+import { Group } from '../../classes/Group';
+import { ownPokemons } from '../../utils/interface.general';
+import { Achamo } from '../../classes/Pokemon/Achamo';
+import { Mizugorou } from '../../classes/Pokemon/Mizugorou';
+import { Kimori } from '../../classes/Pokemon/Kimori';
+import { MainController } from '../../classes/Controller/MainController';
 
 export class BattleController {
 
   public enemy: Pokemon;
   public ownPokemons: ownPokemons[];
   public pokemon: Pokemon;
-  public controller: Controller;
+  public controller: MainController;
   public runCount: number = 0;
   protected damageCorrection: number = 1;
 
-  constructor(_ownPokemons: ownPokemons[], _controller: Controller) {
+  constructor(_ownPokemons: ownPokemons[], _controller: MainController) {
     this.ownPokemons = _ownPokemons;
     this.pokemon = this.ownPokemons[0].pokemon;
     
