@@ -1,4 +1,4 @@
-import { IBasicStatus } from "../../utils/interfaces/IbasicStatus";
+import { TBasicStatus } from "../../utils/type/TBasicStatus";
 
 export abstract class Pokemon {
 
@@ -18,29 +18,58 @@ export abstract class Pokemon {
   protected readonly abstract _groups: Group[];
 
   /**
+   * おぼえられるわざ一覧
+   */
+  protected readonly abstract _moveListToRequest: {
+    lebel: number;
+    move: Move
+  }
+
+  /**
    * 種族値
    */
-  protected readonly abstract _basicPokemonStatus: IBasicStatus;
+  protected readonly abstract _basicPokemonStatus: TBasicStatus;
 
   /**
    * 個体値
    */
-  protected abstract _basicIndividualStatus: IBasicStatus;
+  protected abstract _basicIndividualStatus: TBasicStatus = {
+    hp: 0,
+    attack: 0,
+    protected: 0,
+    SPattack: 0,
+    SPprotected: 0,
+    rapidity: 0
+  }
 
   /**
    * 努力値
    */
-  protected abstract _basicEffortStatus: IBasicStatus;
+  protected abstract _basicEffortStatus: TBasicStatus = {
+    hp: 0,
+    attack: 0,
+    protected: 0,
+    SPattack: 0,
+    SPprotected: 0,
+    rapidity: 0
+  }
 
-  /**
-   * 種族値・個体値・努力値を合わせた決定ステータス
-   */
-  protected abstract _basicTotalStatus: IBasicStatus;
+  /* レベル・わざ・ステータスは、ExceptPokemonとOwnPokemonのインスタンス生成時に必ず
 
   /**
    * レベル
    */
-  protected abstract _lebel: number;
+  protected abstract _lebel: number = 0;
+
+  /**
+   * おぼえているわざ
+   */
+  protected readonly abstract _moveList: Move[] = [];
+  
+  /**
+   * 種族値・個体値・努力値を合わせた決定ステータス
+   */
+  protected abstract _basicTotalStatus: TBasicStatus;
 
   /**
    * ゲッター・セッター
@@ -96,8 +125,8 @@ export abstract class Pokemon {
    * @param _basicIndividualStatus 個体値
    * @param _basicEffortStatus 努力値
    */
-  calculateBasicStatus(_basicPokemonStatus: IBasicStatus, _basicIndividualStatus: IBasicStatus, _basicEffortStatus: IBasicStatus): void {
-    for (let k of Object.keys(this._basicTotalStatus) as (keyof IBasicStatus)[]) {
+  calculateBasicStatus(_basicPokemonStatus: TBasicStatus, _basicIndividualStatus: TBasicStatus, _basicEffortStatus: TBasicStatus): void {
+    for (let k of Object.keys(this._basicTotalStatus) as (keyof TBasicStatus)[]) {
       const common = ((_basicPokemonStatus[k] * 2) + _basicIndividualStatus[k] + _basicEffortStatus[k]) * this._lebel / 100;
       this._basicTotalStatus[k] = k === 'hp' 
         ? Math.round(common + this._lebel + 10)

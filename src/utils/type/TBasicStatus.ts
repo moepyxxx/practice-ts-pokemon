@@ -1,4 +1,4 @@
-export interface IBasicStatus {
+export type TBasicStatus = {
   hp: number,
   attack: number,
   protected: number,
