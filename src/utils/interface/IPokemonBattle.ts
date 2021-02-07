@@ -16,21 +16,4 @@ export interface IPokemonBattle {
    * バトルステータスランク
    */
   _battleStatusRank: TBattleStatusRank;
-
-  /**
-   * 残りHP計算
-   */
-  calculateRemainingHp: (effect: 'saFainting' | 'sub' | 'add' | 'reset', number: number) => number;
-
-  /**
-   * バトルステータスランクの加算・減算
-   */
-  addBattleStatusRank:(key: keyof TBattleStatusRank, number: number) => void;
-  subBattleStatusRank:(key: keyof TBattleStatusRank, number: number) => void;
-
-  /**
-   * ランク補正値の計算
-   */
-  calculateBattleStatusRankCorrection: (key: keyof TBattleStatusRank) => number;
-
 }

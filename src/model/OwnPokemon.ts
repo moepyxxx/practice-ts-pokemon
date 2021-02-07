@@ -2,10 +2,13 @@ import { ExceptPokemon } from "../model/ExceptPokemon";
 import { ILebel } from '../utils/interface/ILebel';
 import { IStatus } from '../utils/interface/IStatus';
 import { IMoveList } from '../utils/interface/IMoveList';
+import { IPokemonBattle } from '../utils/interface/IPokemonBattle';
 import { TBasicStatus } from '../utils/type/TBasicStatus';
+import { TBattleStatusRank } from '../utils/type/TBattleStatusRank';
 import { Move } from '../model/move/Move';
+import { StatusAilment } from '../model/statusAilment/StatusAilment';
 
-export class OwnPokemon　implements ILebel, IStatus, IMoveList {
+export class OwnPokemon　implements ILebel, IStatus, IMoveList, IPokemonBattle {
   /**
    * ポケモン
    */
@@ -44,19 +47,36 @@ export class OwnPokemon　implements ILebel, IStatus, IMoveList {
   _basicEffortStatus: TBasicStatus;
   _basicTotalStatus: TBasicStatus;
 
+  /**
+   * 残りHP
+   */
+  _remainingHp: number;
+
+  /**
+   * 状態異常
+   */
+  _statusAilment: StatusAilment[];
+
+  /**
+   * バトルステータスランク
+   */
+  _battleStatusRank: TBattleStatusRank;
+
   constructor(pokemon: ExceptPokemon, encounterField: Field.name, nickname?: string) {
     this._nickname = nickname ?? pokemon.name;
-    this._pokemon = pokemon;
     this._encounter = encounterField;
 
-    /** ステータス等の引き継ぎ */
-    this._lebel = this._pokemon.lebel;
-    this._basicPokemonStatus = this._pokemon._basicPokemonStatus;
-    this._basicIndividualStatus = this._pokemon._basicIndividualStatus;
-    this._basicEffortStatus = this._pokemon._basicEffortStatus;
+    /** ステータス等をExceptPokemonクラスから引き継ぎ */
+    this._pokemon = pokemon;
+    this._lebel = pokemon.lebel;
+    this._basicPokemonStatus = pokemon._basicPokemonStatus;
+    this._basicIndividualStatus = pokemon._basicIndividualStatus;
+    this._basicEffortStatus = pokemon._basicEffortStatus;
     this._basicTotalStatus = this.calculateBasicStatus();
-    this._moveList = this._pokemon.moveList;
-
+    this._moveList = pokemon._moveList;
+    this._remainingHp = pokemon._remainingHp;
+    this._statusAilment = pokemon._statusAilment;
+    this._battleStatusRank = pokemon._battleStatusRank;
     this._exPoint = Math.pow(this._lebel, 3);
   }
 

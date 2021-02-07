@@ -2,11 +2,14 @@ import { Pokemon } from "../model/pokemon/Pokemon";
 import { ILebel } from '../utils/interface/ILebel';
 import { IStatus } from '../utils/interface/IStatus';
 import { IMoveList } from '../utils/interface/IMoveList';
+import { IPokemonBattle } from '../utils/interface/IPokemonBattle';
 import { TBasicStatus } from '../utils/type/TBasicStatus';
+import { TBattleStatusRank } from '../utils/type/TBattleStatusRank';
 import { Move } from '../model/move/Move';
 import { randomMultipleInArray } from '../utils/general';
+import { StatusAilment } from '../model/statusAilment/StatusAilment';
 
-export class ExceptPokemon implements ILebel, IStatus, IMoveList {
+export class ExceptPokemon implements ILebel, IStatus, IMoveList, IPokemonBattle {
 
   /**
    * ポケモン
@@ -38,6 +41,30 @@ export class ExceptPokemon implements ILebel, IStatus, IMoveList {
   };
   _basicTotalStatus: TBasicStatus;
 
+  /**
+   * 残りHP
+   */
+  _remainingHp: number;
+
+  /**
+   * 状態異常
+   */
+  _statusAilment: StatusAilment[] = [];
+
+  /**
+   * バトルステータスランク
+   */
+  _battleStatusRank: TBattleStatusRank = {
+    attack: 0,
+    protected: 0,
+    SPattack: 0,
+    SPprotected: 0,
+    rapidity: 0,
+    critical: 0,
+    accuracy: 0,
+    evasion: 0
+  };
+
   constructor(pokemon: Pokemon, lebel: number) {
     this._pokemon = pokemon;
     this._lebel = lebel;
@@ -45,6 +72,8 @@ export class ExceptPokemon implements ILebel, IStatus, IMoveList {
     this._basicPokemonStatus = this._pokemon.basicPokemonStatus;
     this._basicIndividualStatus = this.setRandomBasicIndividualStatus();
     this._basicTotalStatus = this.calculateBasicStatus();
+
+    this._remainingHp = this._basicTotalStatus.hp;
 
     this._moveList = this.getnitialMoveList();
   }
