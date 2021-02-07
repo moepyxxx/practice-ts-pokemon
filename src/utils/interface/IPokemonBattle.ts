@@ -1,4 +1,5 @@
 import { TBattleStatusRank } from '../type/TBattleStatusRank';
+import { StatusAilment } from '../../model/statusAilment/StatusAilment';
 
 export interface IPokemonBattle {
   /**
