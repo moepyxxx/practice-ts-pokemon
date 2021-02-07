@@ -1,5 +1,6 @@
 import { TBasicStatus } from "../../utils/type/TBasicStatus";
 import { Group } from '../group/Group';
+import { Move } from '../move/Move';
 
 export abstract class Pokemon {
 
