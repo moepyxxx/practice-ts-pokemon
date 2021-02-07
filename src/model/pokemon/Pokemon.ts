@@ -25,7 +25,7 @@ export abstract class Pokemon {
   protected readonly abstract _moveListToRequest: {
     lebel: number;
     move: Move
-  }
+  }[];
 
   /**
    * 種族値
@@ -118,6 +118,10 @@ export abstract class Pokemon {
 
   get groups() {
     return this._groups;
+  }
+
+  get moveListToRequest() {
+    return this._moveListToRequest;
   }
 
 
