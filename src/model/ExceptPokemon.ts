@@ -6,7 +6,7 @@ import { TBasicStatus } from '../utils/type/TBasicStatus';
 import { Move } from '../model/move/Move';
 import { randomMultipleInArray } from '../utils/general';
 
-export class ExceptPokemon implements ILebel, IStatus,IMoveList {
+export class ExceptPokemon implements ILebel, IStatus, IMoveList {
 
   /**
    * ポケモン
@@ -38,7 +38,7 @@ export class ExceptPokemon implements ILebel, IStatus,IMoveList {
   };
   _basicTotalStatus: TBasicStatus;
 
-  constructor(pokemon: Pokemon, lebel:number) {
+  constructor(pokemon: Pokemon, lebel: number) {
     this._pokemon = pokemon;
     this._lebel = lebel;
 
@@ -47,6 +47,18 @@ export class ExceptPokemon implements ILebel, IStatus,IMoveList {
     this._basicTotalStatus = this.calculateBasicStatus();
 
     this._moveList = this.getnitialMoveList();
+  }
+
+  get name() {
+    return this._pokemon.name;
+  }
+
+  get lebel() {
+    return this._lebel;
+  }
+
+  get moveList() {
+    return this._moveList;
   }
 
   /**

@@ -6,5 +6,4 @@ export interface IStatus {
   _basicPokemonStatus: TBasicStatus;
   _basicEffortStatus: TBasicStatus;
   calculateBasicStatus: () => TBasicStatus;
-  setRandomBasicIndividualStatus: () => TBasicStatus;
 };
