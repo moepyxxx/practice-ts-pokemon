@@ -53,9 +53,11 @@ export class Denjiha extends Move {
 
   effects(...pokemons: Pokemon[]): string {
 
-    const [atkPokemon, defPokemon] = pokemons;
-    const resultMessage: string = defPokemon.setStatusAilment(STATUS_AILMENT_CLASS_LIST.saParalysis);
-    return resultMessage;
+    // [todo]のちほど実装
+    // const [atkPokemon, defPokemon] = pokemons;
+    // const resultMessage: string = defPokemon.setStatusAilment(STATUS_AILMENT_CLASS_LIST.saParalysis);
+    // return resultMessage;
+    return 'hoge';
 
   }
 }

@@ -1,4 +1,5 @@
 import { TBasicStatus } from '../type/TBasicStatus';
+import { Move } from '../../model/move/Move';
 
 export interface ISetInitPokemon {
   /**
