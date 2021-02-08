@@ -1,13 +1,13 @@
-import { Pokemon } from "../model/pokemon/Pokemon";
-import { ILebel } from '../utils/interface/ILebel';
-import { IStatus } from '../utils/interface/IStatus';
-import { IMoveList } from '../utils/interface/IMoveList';
-import { IPokemonBattle } from '../utils/interface/IPokemonBattle';
-import { TBasicStatus } from '../utils/type/TBasicStatus';
-import { TBattleStatusRank } from '../utils/type/TBattleStatusRank';
-import { Move } from '../model/move/Move';
-import { randomMultipleInArray } from '../utils/general';
-import { StatusAilment } from '../model/statusAilment/StatusAilment';
+import { Pokemon } from "../../model/pokemon/Pokemon";
+import { ILebel } from '../../utils/interface/ILebel';
+import { IStatus } from '../../utils/interface/IStatus';
+import { IMoveList } from '../../utils/interface/IMoveList';
+import { IPokemonBattle } from '../../utils/interface/IPokemonBattle';
+import { TBasicStatus } from '../../utils/type/TBasicStatus';
+import { TBattleStatusRank } from '../../utils/type/TBattleStatusRank';
+import { Move } from '../../model/move/Move';
+import { randomMultipleInArray } from '../../utils/general';
+import { StatusAilment } from '../../model/statusAilment/StatusAilment';
 
 export class ExceptPokemon implements ILebel, IStatus, IMoveList, IPokemonBattle {
 
@@ -69,7 +69,7 @@ export class ExceptPokemon implements ILebel, IStatus, IMoveList, IPokemonBattle
     this._pokemon = pokemon;
     this._lebel = lebel;
 
-    this._basicPokemonStatus = this._pokemon.basicPokemonStatus;
+    this._basicPokemonStatus = this._pokemon._basicPokemonStatus;
     this._basicIndividualStatus = this.setRandomBasicIndividualStatus();
     this._basicTotalStatus = this.calculateBasicStatus();
 

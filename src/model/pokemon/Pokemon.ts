@@ -1,5 +1,6 @@
 import { Group } from '../group/Group';
 import { Move } from '../move/Move';
+import { TBasicStatus } from '../../utils/type/TBasicStatus';
 
 export abstract class Pokemon {
 
@@ -25,6 +26,11 @@ export abstract class Pokemon {
     lebel: number;
     move: Move
   }[];
+
+  /**
+   * 種族値
+   */
+  readonly abstract _basicPokemonStatus: TBasicStatus;
 
   /**
    * ゲッター・セッター

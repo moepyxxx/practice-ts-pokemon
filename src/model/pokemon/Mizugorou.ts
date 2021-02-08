@@ -45,4 +45,16 @@ export class Mizugorou extends Pokemon {
     // {lebel:36, move: 'がむしゃら'},
     // {lebel:39, move: 'ハイドロポンプ'}
   ];
+
+  /**
+   * 種族値
+   */
+  _basicPokemonStatus = {
+    hp: 50,
+    attack: 70,
+    protected: 50,
+    SPattack: 50,
+    SPprotected: 50,
+    rapidity: 40
+  };
 }
