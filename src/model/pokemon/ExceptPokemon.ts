@@ -69,7 +69,7 @@ export class ExceptPokemon implements ILebel, IStatus, IMoveList, IPokemonBattle
     this._pokemon = pokemon;
     this._lebel = lebel;
 
-    this._basicPokemonStatus = this._pokemon.basicPokemonStatus;
+    this._basicPokemonStatus = this._pokemon._basicPokemonStatus;
     this._basicIndividualStatus = this.setRandomBasicIndividualStatus();
     this._basicTotalStatus = this.calculateBasicStatus();
 
