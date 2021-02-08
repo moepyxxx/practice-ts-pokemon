@@ -1,0 +1,1 @@
+export type TFieldClassification = '森' | '洞窟' | '砂漠' | '道路' | '水道' | 'ビーチ' | '街';
