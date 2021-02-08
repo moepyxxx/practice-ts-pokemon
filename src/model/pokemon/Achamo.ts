@@ -44,4 +44,16 @@ export class Achamo extends Pokemon {
     // {lebel:36, move: 'きしかいせい'},
     // {lebel:39, move: 'フレアドライブ'}
   ];
+
+  /**
+   * 種族値
+   */
+  _basicPokemonStatus = {
+    hp: 45,
+    attack: 60,
+    protected: 40,
+    SPattack: 70,
+    SPprotected: 50,
+    rapidity: 45
+  };
 }

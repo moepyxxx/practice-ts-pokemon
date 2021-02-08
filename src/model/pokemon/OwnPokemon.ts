@@ -1,12 +1,12 @@
-import { ExceptPokemon } from "../model/ExceptPokemon";
-import { ILebel } from '../utils/interface/ILebel';
-import { IStatus } from '../utils/interface/IStatus';
-import { IMoveList } from '../utils/interface/IMoveList';
-import { IPokemonBattle } from '../utils/interface/IPokemonBattle';
-import { TBasicStatus } from '../utils/type/TBasicStatus';
-import { TBattleStatusRank } from '../utils/type/TBattleStatusRank';
-import { Move } from '../model/move/Move';
-import { StatusAilment } from '../model/statusAilment/StatusAilment';
+import { ExceptPokemon } from "./ExceptPokemon";
+import { ILebel } from '../../utils/interface/ILebel';
+import { IStatus } from '../../utils/interface/IStatus';
+import { IMoveList } from '../../utils/interface/IMoveList';
+import { IPokemonBattle } from '../../utils/interface/IPokemonBattle';
+import { TBasicStatus } from '../../utils/type/TBasicStatus';
+import { TBattleStatusRank } from '../../utils/type/TBattleStatusRank';
+import { Move } from '../../model/move/Move';
+import { StatusAilment } from '../../model/statusAilment/StatusAilment';
 
 export class OwnPokemon　implements ILebel, IStatus, IMoveList, IPokemonBattle {
   /**

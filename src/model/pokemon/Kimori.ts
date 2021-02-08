@@ -44,4 +44,16 @@ export class Kimori extends Pokemon {
     // {lebel:36, move: 'がむしゃら'},
     // {lebel:39, move: 'リーフストーム'}
   ];
+
+  /**
+   * 種族値
+   */  
+  _basicPokemonStatus = {
+    hp: 40,
+    attack: 45,
+    protected: 35,
+    SPattack: 65,
+    SPprotected: 55,
+    rapidity: 70
+  };
 }
