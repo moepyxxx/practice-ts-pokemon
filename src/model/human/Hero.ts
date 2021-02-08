@@ -3,6 +3,8 @@ import { OwnPokemon } from '../pokemon/OwnPokemon';
 import { IOnHandPokemons } from '../../utils/interface/IOnHandPokemons';
 
 export class Hero extends Human implements IOnHandPokemons {
+  
+  private static _instance: Hero;
 
   /**
    * 所持金
@@ -19,7 +21,14 @@ export class Hero extends Human implements IOnHandPokemons {
    */
   onHandPokemons: OwnPokemon[];
 
-  constructor(name: string, gender: '男' | '女') {
+  private constructor(name: string, gender: '男' | '女') {
     super(name, gender);
+  }
+
+  public static getInstance(): Hero {
+    if (!this._instance) {
+      this._instance = new Hero('名前', '男');
+    }
+    return this._instance;
   }
 }
