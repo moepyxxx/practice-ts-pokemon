@@ -36,6 +36,7 @@ export class MainController {
   public static getInstance(): MainController {
     if (!this._instance) {
       this._instance = new MainController();
+      this._instance.renderSerif('ゲームをはじめよう');
     }
     return this._instance;
   }
@@ -77,7 +78,7 @@ export class MainController {
     };
   }
 
-  renderSerif(serif: string): void{
+  renderSerif(serif: any): void{
     console.log(serif);
   }
 }
