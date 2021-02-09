@@ -7,6 +7,7 @@ import { TBasicStatus } from '../../utils/type/TBasicStatus';
 import { TBattleStatusRank } from '../../utils/type/TBattleStatusRank';
 import { Move } from '../../model/move/Move';
 import { StatusAilment } from '../../model/statusAilment/StatusAilment';
+import { MapField } from '../field/MapField';
 
 export class OwnPokemon　implements ILebel, IStatus, IMoveList, IPokemonBattle {
   /**
@@ -37,7 +38,7 @@ export class OwnPokemon　implements ILebel, IStatus, IMoveList, IPokemonBattle 
   /**
    * 出会った場所
    */
-  _encounter: Field.name;
+  _encounter: MapField['_name'];
    
   /**
    * ステータス
@@ -62,7 +63,7 @@ export class OwnPokemon　implements ILebel, IStatus, IMoveList, IPokemonBattle 
    */
   _battleStatusRank: TBattleStatusRank;
 
-  constructor(pokemon: ExceptPokemon, encounterField: Field.name, nickname?: string) {
+  constructor(pokemon: ExceptPokemon, encounterField: MapField['_name'], nickname?: string) {
     this._nickname = nickname ?? pokemon.name;
     this._encounter = encounterField;
 
