@@ -1,34 +1,21 @@
-import { TFieldClassification } from '../../utils/type/TFieldClassification';
-import { TPlaceClassification } from '../../utils/type/TPlaceClassification';
 import { Ordinary } from '../human/Ordinary';
 import { Trainer } from '../human/Trainer';
-import { ExceptPokemon } from '../pokemon/ExceptPokemon';
+import { Place } from '../field/Place';
 
-export abstract class MapField {
+export class MapField {
   /**
    * フィールド名
    */
-  abstract _name: string;
-
-  /**
-   * フィールドの分類
-   */
-  abstract _fieldClassification: TFieldClassification;
+ _name: string;
 
   /**
    * フィールドを構成する場所要素
    */
-  protected abstract readonly _places: {
-    placeClassification: TPlaceClassification;
-    humans?: (Ordinary | Trainer)[];
-    pokemons?: {
-      exceptPokemon: ExceptPokemon;
-      appearingRate: number;
-      lebelRange: number[];
-    }[];
-  }[];
+ _place: Place[];
 
-  get places() {
-    return this._places;
-  }
+ /**
+  * 登場する人物
+  */
+ _humans?: (Ordinary | Trainer)[];
+
 }
