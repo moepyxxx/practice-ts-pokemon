@@ -1,3 +1,5 @@
+import { OwnPokemon } from '../../model/pokemon/OwnPokemon';
+
 export interface IRecoverPokemons {
-  recoverPokemons: () => void;
+  recoverPokemons: (pokemons: OwnPokemon[]) => void;
 }

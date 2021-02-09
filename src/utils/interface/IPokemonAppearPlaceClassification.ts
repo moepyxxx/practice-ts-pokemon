@@ -1,3 +1,5 @@
+import { TPlaceClassification } from '../type/TPlaceClassification';
+
 export interface IPokemonAppearPlaceClassification {
-  pokemonAppearPlaceClassification: '草むら' | '池' | '深いくさむら' | '洞窟の中' | '海';
+  _pokemonAppearPlaceClassification: TPlaceClassification;
 }
