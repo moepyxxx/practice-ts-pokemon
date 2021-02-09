@@ -5,18 +5,14 @@ import { ExceptPokemon } from '../pokemon/ExceptPokemon';
 import { IWildPokemons } from '../../utils/interface/IWildPokemons';
 import { IPokemonAppearPlaceClassification } from '../../utils/interface/IPokemonAppearPlaceClassification';
 import { TPlaceClassification } from '../../utils/type/TPlaceClassification';
+import { TWildPokemons } from '../../utils/type/TWildPokemons';
 
 export class PokemonAppearPlace extends Place implements IWildPokemons, IPokemonAppearPlaceClassification {
 
   /**
    * 野生ポケモン
    */
-  _wildPokemons: {
-    trigger: 'すすむ' | 'つりする' | 'はなしかける';
-    exceptPokemon: ExceptPokemon;
-    appearingRate: number;
-    lebelRange: number[];
-  }[];
+  _wildPokemons: TWildPokemons[];
 
   /**
    * 場所の分類
@@ -26,12 +22,7 @@ export class PokemonAppearPlace extends Place implements IWildPokemons, IPokemon
   constructor(
     name: string,
     humans: (Ordinary | Trainer)[],
-    wildPokemons: {
-      trigger: 'すすむ' | 'つりする' | 'はなしかける';
-      exceptPokemon: ExceptPokemon;
-      appearingRate: number;
-      lebelRange: number[];
-    }[],
+    wildPokemons: TWildPokemons[],
     placeClassification: TPlaceClassification
   ) {
     super(name, humans);
