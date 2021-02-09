@@ -20,8 +20,8 @@ export abstract class MapField {
    */
   protected abstract readonly _places: {
     placeClassification: TPlaceClassification;
-    humans: (Ordinary | Trainer)[];
-    pokemons: {
+    humans?: (Ordinary | Trainer)[];
+    pokemons?: {
       exceptPokemon: ExceptPokemon;
       appearingRate: number;
       lebelRange: number[];
