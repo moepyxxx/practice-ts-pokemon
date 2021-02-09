@@ -76,4 +76,8 @@ export class MainController {
       lebel: 5
     };
   }
+
+  renderSerif(serif: string): void{
+    console.log(serif);
+  }
 }
