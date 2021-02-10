@@ -23,4 +23,19 @@ export abstract class Place {
     this._humans = humans;
   }
 
+  /**
+   * Humansの追加・削除
+   * イベントで変わるため
+   */
+  addHumanToPlace(addHuman: Ordinary | Trainer) {
+    this._humans?.push(addHuman);
+  }
+
+  removeHumanFromPlace(removeHuman: Ordinary | Trainer) {
+    const index = this._humans?.findIndex( human => human.name === removeHuman.name);
+    if (index) {
+      this._humans?.splice(index, 1);
+    }
+  }
+
 }
