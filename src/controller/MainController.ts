@@ -49,7 +49,7 @@ export class MainController {
     this._place = place;
   }
 
-  walk(place?: Place) {
+  heroWalk(place?: Place) {
     if (place) {
       this.place = place;
       return;
@@ -65,7 +65,7 @@ export class MainController {
     return;
   }
 
-  talk(human: Trainer | Ordinary) {
+  heroTalkTo(human: Trainer | Ordinary) {
     human.talk();
   }
 

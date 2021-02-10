@@ -2,6 +2,8 @@ import { Human } from './Human';
 import { OwnPokemon } from '../pokemon/OwnPokemon';
 import { IOnHandPokemons } from '../../utils/interface/IOnHandPokemons';
 import { THeroStatus } from '../../utils/type/THeroStatus';
+import { Ordinary } from './Ordinary';
+import { Trainer } from './Trainer';
 
 export class Hero extends Human implements IOnHandPokemons {
   

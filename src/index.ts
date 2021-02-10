@@ -52,3 +52,5 @@ console.log('# mainController.place = heroHouse;');
 mainController.field = mishiroTown;
 mainController.place = heroHouse;
 mainController.renderSerif(`${mainController._hero.name}は現在、${mishiroTown.name}の${heroHouse._name}にいる`);
+console.log('# mainController.heroWalk();');
+mainController.heroWalk();
