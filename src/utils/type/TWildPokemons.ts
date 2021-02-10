@@ -1,8 +1,8 @@
-import { ExceptPokemon } from '../../model/pokemon/ExceptPokemon';
+import { Pokemon } from '../../model/pokemon/Pokemon';
 
 export type TWildPokemons = {
-  trigger: 'すすむ' | 'つりする' | 'はなしかける';
-  exceptPokemon: ExceptPokemon;
+  trigger: 'すすむ' | 'つりする' | 'はなしかける' | 'イベント';
+  pokemon: Pokemon;
   appearingRate: number;
   lebelRange: number[];
 };
