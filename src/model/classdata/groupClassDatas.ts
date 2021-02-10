@@ -6,6 +6,7 @@ import { Jimen } from '../group/Jimen';
 import { Kakutou } from '../group/Kakutou';
 import { Normal } from '../group/Normal';
 import { Goast } from '../group/Goast';
+import { Aku } from '../group/Aku';
 import { Group } from '../group/Group';
 
 export type GROUP_KEYTYPE = 'denki' | 'hagane' | 'hikou' | 'koori' | 'kakutou' | 'mizu'
@@ -27,7 +28,7 @@ export const GROUP_CLASS_LIST: {
   "mushi": new Denki(),
   "iwa": new Denki(),
   "dragon": new Denki(),
-  "aku": new Denki(),
+  "aku": new Aku(),
   "goast": new Goast(),
   "esper": new Denki(),
   "faily": new Denki(),
