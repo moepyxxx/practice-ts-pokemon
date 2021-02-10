@@ -10,8 +10,13 @@ export class Trainer extends Human implements ITalk, IOnHandPokemons {
    */
   _onHandPokemons: OwnPokemon[];
 
-  constructor(name: string, gender: '男' | '女') {
+  constructor(name: string, gender: '男' | '女', onHandPokemon?: OwnPokemon[]) {
     super(name, gender);
+    this._onHandPokemons = onHandPokemon? this._onHandPokemons : [];
+  }
+
+  set onHandPokemons(onHandPokemons: OwnPokemon[]) {
+    this._onHandPokemons = onHandPokemons;
   }
 
   /**
