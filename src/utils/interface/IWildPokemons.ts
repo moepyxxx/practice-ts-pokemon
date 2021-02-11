@@ -1,10 +1,5 @@
-import { ExceptPokemon } from '../../model/pokemon/ExceptPokemon';
+import { TWildPokemons } from '../type/TWildPokemons';
 
 export interface IWildPokemons {
-  _wildPokemons: {
-    trigger: 'すすむ' | 'つりする' | 'はなしかける';
-    exceptPokemon: ExceptPokemon;
-    appearingRate: number;
-    lebelRange: number[];
-  }[];
+  _wildPokemons: TWildPokemons[];
 }
