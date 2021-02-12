@@ -22,8 +22,8 @@ export class Ordinary extends Human implements ITalk {
    */
   talk(talkKey?: string) {
     const key = talkKey ? talkKey : this._talkKey;
-    if (talkKey) {
-      return `${this._name}：${TALK_KEY_DATA[talkKey]}`;
+    if (key) {
+      return `${this._name}：${TALK_KEY_DATA[key]}`;
     }
   }
 }
