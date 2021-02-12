@@ -1,3 +1,3 @@
 export interface ITalk {
-  talk: () => void;
+  talk: (talkKey: string) => void;
 }
