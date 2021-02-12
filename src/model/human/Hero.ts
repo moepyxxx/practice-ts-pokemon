@@ -12,7 +12,7 @@ export class Hero extends Human implements IOnHandPokemons {
   /**
    * 所持金
    */
-  protected _pocketMoney: number = 1000;
+  private _pocketMoney: number = 1000;
 
   /**
    * 持っている全てのポケモン
@@ -27,13 +27,13 @@ export class Hero extends Human implements IOnHandPokemons {
   /**
    * 持っているバッジ
    */
-  _onHandGymBadge = [];
+  private _onHandGymBadge = [];
 
   private constructor(name: string, gender: '男' | '女') {
     super(name, gender);
   }
 
-  public getHeroData(): THeroStatus {
+  getHeroData(): THeroStatus {
     return {
       name: this._name,
       gender: this._gender,
@@ -45,6 +45,13 @@ export class Hero extends Human implements IOnHandPokemons {
                         ? this._onHandGymBadge
                         : 'まだバッジを持っていません'
     }
+  }
+
+  getNewPokemon(pokemon: OwnPokemon) {
+    if (this._onHandPokemons.length > 6) {
+      this._onHandPokemons.push(pokemon);
+    }
+    this._haveAllPokemons.push(pokemon);
   }
 
   public static getInstance(name?: string, gender?: '男' | '女'): Hero {

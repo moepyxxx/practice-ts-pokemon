@@ -71,5 +71,17 @@ mainController.place = heroHouse;
 mainController.renderSerif(`${mainController._hero.name}は現在、${mishiroTown.name}の${heroHouse._name}にいる`);
 console.log('# mainController.heroWalk();');
 mainController.heroWalk();
-console.log('# イベント発生：eventController.events('1-1');');
+console.log('# イベント発生：eventController.events("1-1");');
 eventController.events('1-1');
+
+console.log('-------------------------');
+console.log('# 103番道路の草むらへ移動');
+console.log('# mainController.field = douro103;');
+console.log('# mainController.place = kusamura103;');
+mainController.field = douro103;
+mainController.place = kusamura103;
+mainController.renderSerif(`${mainController._hero.name}は${mainController._field.name}にきた。`);
+
+console.log('-------------------------');
+console.log('# イベント発生：eventController.events("1-2");');
+eventController.events('1-2');
