@@ -17,12 +17,12 @@ export class Hero extends Human implements IOnHandPokemons {
   /**
    * 持っている全てのポケモン
    */
-  private _haveAllPokemons: OwnPokemon[] = [];
+  _haveAllPokemons: OwnPokemon[] = [];
 
   /**
    * 手持ちポケモン
    */
-  private _onHandPokemons: OwnPokemon[] = [];
+  _onHandPokemons: OwnPokemon[] = [];
 
   /**
    * 持っているバッジ

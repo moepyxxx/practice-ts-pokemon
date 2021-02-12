@@ -1,5 +1,7 @@
-import { Human } from '../model/human/Human';
 import { Hero } from '../model/human/Hero';
+import { Achamo } from '../model/pokemon/Achamo';
+import { ExceptPokemon } from '../model/pokemon/ExceptPokemon';
+import { OwnPokemon } from '../model/pokemon/OwnPokemon';
 import { TEventHuman } from '../utils/type/TEventHuman';
 import { MainController } from './MainController';
 
@@ -74,6 +76,17 @@ export class EventController {
           const talk = mother.human.talk('102番道路へ行くお願いをする');
           MainController.getInstance().renderSerif(talk);
         };
+        break;
+      case '1-2':
+        const hakase = this._humans?.find(human => human.key === 'hakase');
+        if (hakase?.human) {
+          const talk = hakase.human.talk('野生のポケモンに襲われている博士が助けを求める');
+          MainController.getInstance().renderSerif(talk);
+        }
+        const eAchamo = new ExceptPokemon(new Achamo, 5);
+        const achamo = new OwnPokemon(eAchamo, MainController.getInstance()._field.name);
+        MainController.getInstance()._hero.getNewPokemon(achamo);
+        MainController.getInstance().renderSerif(`${MainController.getInstance()._hero.name}は、${achamo.pokemon.name}に決めた`);
         break;
     }
     return result;

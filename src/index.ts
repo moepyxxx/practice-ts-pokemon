@@ -83,3 +83,5 @@ mainController.place = kusamura103;
 mainController.renderSerif(`${mainController._hero.name}は${mainController._field.name}にきた。`);
 
 console.log('-------------------------');
+console.log('# イベント発生：eventController.events("1-2");');
+eventController.events('1-2');
