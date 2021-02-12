@@ -81,6 +81,10 @@ export class OwnPokemon　implements ILebel, IStatus, IMoveList, IPokemonBattle 
     this._exPoint = Math.pow(this._lebel, 3);
   }
 
+  get pokemon() {
+    return this._pokemon;
+  }
+
   /**
    * ステータスの計算
    */
