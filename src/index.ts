@@ -1,4 +1,5 @@
 import { MainController } from './controller/MainController';
+import { EventController } from './controller/EventController';
 import { Hero } from './model/human/Hero';
 import { Ordinary } from './model/human/Ordinary';
 
@@ -46,6 +47,22 @@ const douro103 = new MapField('103番どうろ', [ kusamura103 ], [ mishiroTown 
 mishiroTown.nearField = [ douro103 ];
 
 console.log('-------------------------');
+console.log('# イベントクラスを作成');
+console.log('# const eventController = EventController.getInstance();');
+const eventController = EventController.getInstance();
+console.log(`# eventController.setHumans('add',
+{ key: 'mama', human: mother },
+{ key: 'hakase', human: odamakiHakase },
+{ key: 'rival', human: rival }
+);
+`);
+eventController.setHumans('add',
+{ key: 'mama', human: mother },
+{ key: 'hakase', human: odamakiHakase },
+{ key: 'rival', human: rival }
+);
+
+console.log('-------------------------');
 console.log('# ゲームスタート時、場所をミシロタウンの家にセット');
 console.log('# mainController.field = mishiroTown;');
 console.log('# mainController.place = heroHouse;');
@@ -54,3 +71,5 @@ mainController.place = heroHouse;
 mainController.renderSerif(`${mainController._hero.name}は現在、${mishiroTown.name}の${heroHouse._name}にいる`);
 console.log('# mainController.heroWalk();');
 mainController.heroWalk();
+console.log('# イベント発生：eventController.events('1-1');');
+eventController.events('1-1');

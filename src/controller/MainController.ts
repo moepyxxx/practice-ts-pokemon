@@ -66,7 +66,7 @@ export class MainController {
   }
 
   heroTalkTo(human: Trainer | Ordinary) {
-    human.talk();
+    // human.talk();
   }
 
   assignAppearPokemon(pokemons: TWildPokemons[]) {
