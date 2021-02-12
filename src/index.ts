@@ -71,5 +71,5 @@ mainController.place = heroHouse;
 mainController.renderSerif(`${mainController._hero.name}は現在、${mishiroTown.name}の${heroHouse._name}にいる`);
 console.log('# mainController.heroWalk();');
 mainController.heroWalk();
-console.log('# イベント発生：eventController.events('1-1');');
+console.log('# イベント発生：eventController.events("1-1");');
 eventController.events('1-1');
