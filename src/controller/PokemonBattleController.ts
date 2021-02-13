@@ -49,6 +49,7 @@ export class PokemonBattleController {
     const isSaFainging = [this._onBattle, this._enemy].some(pokemon => pokemon._statusAilment?.name === 'ひんし');
     if (isSaFainging) {
       this.renderSerif('どっちかのポケモンがひんしだよ！バトルできないよ');
+      return;
     }
 
     const enemyMove: Move = this.autoSelectMove(this._enemy);
@@ -154,12 +155,13 @@ export class PokemonBattleController {
    */
   actionExecute(moveActionSet: TMoveActionSet[]): void {
 
-    moveActionSet.forEach((moveAction) => {
+    moveActionSet.some((moveAction) => {
       const damage = this.checkMoveActionEffect(moveAction);
       this.calculateRemainingHp(moveAction.defense, 'sub', damage);
 
       if (this.checkPokemonSaFainting(moveAction.defense)) {
         this.renderSerif(`${moveAction.defense.pokemon.name}はたおれた。hpがゼロになったので、バトルが終了した！`);
+        return true;
       }
     });
     moveActionSet.splice(0);

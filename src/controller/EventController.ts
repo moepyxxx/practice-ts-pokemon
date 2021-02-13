@@ -98,6 +98,8 @@ export class EventController {
         battleController.setBattleAction('たたかう', battleController._onBattle._moveList[0]);
         battleController.setBattleAction('たたかう', battleController._onBattle._moveList[1]);
         battleController.setBattleAction('たたかう', battleController._onBattle._moveList[2]);
+        battleController.setBattleAction('たたかう', battleController._onBattle._moveList[0]);
+        battleController.setBattleAction('たたかう', battleController._onBattle._moveList[2]);
         break;
     }
     return result;
