@@ -84,8 +84,11 @@ export class PokemonBattleController {
       move: enemyMove
     };
 
+
     const actionPokemons: TMoveActionSet[] = [onBattleMoveList, enemyMoveList];
+    console.log(actionPokemons);
     const checkedMoveOrderPokemons = this.checkMoveOrder(actionPokemons);
+    console.log(checkedMoveOrderPokemons);
 
     this.actionExecute(checkedMoveOrderPokemons);
   }
@@ -121,16 +124,17 @@ export class PokemonBattleController {
 
     return orderTargetMoveActionSet.sort((next, cur) => {
 
+      console.log(orderTargetMoveActionSet);
       // わざの優先度を確認
-      if (next.move.priority !== cur.move.priority) {
-        if (next.move.priority < cur.move.priority) return 1;
-        if (next.move.priority > cur.move.priority) return -1;
+      if (next.move._priority !== cur.move._priority) {
+        if (next.move._priority < cur.move._priority) return 1;
+        if (next.move._priority > cur.move._priority) return -1;
       }
 
       // ポケモンのすばやさを確認
-      if (next.attack.calculateBasicStatus().rapidity !== cur.defense.calculateBasicStatus().rapidity) {
-        if (next.attack.calculateBasicStatus().rapidity < cur.defense.calculateBasicStatus().rapidity) return 1;
-        if (next.attack.calculateBasicStatus().rapidity > cur.defense.calculateBasicStatus().rapidity) return -1;
+      if (next.attack.calculateBasicStatus().rapidity !== cur.attack.calculateBasicStatus().rapidity) {
+        if (next.attack.calculateBasicStatus().rapidity < cur.attack.calculateBasicStatus().rapidity) return 1;
+        if (next.attack.calculateBasicStatus().rapidity > cur.attack.calculateBasicStatus().rapidity) return -1;
       }
 
       // ランダム確認
@@ -269,7 +273,7 @@ export class PokemonBattleController {
       
       damage = this.calculateStatusAilmentDamage(moveActionSet.attack, moveActionSet.defense, moveActionSet.move, damage);
 
-      this.renderSerif(`${moveActionSet.attack.pokemon.name}に${damage}のダメージ！`);
+      this.renderSerif(`${moveActionSet.defense.pokemon.name}に${damage}のダメージ！`);
 
       this.damageCorrection = 1;
       return damage;

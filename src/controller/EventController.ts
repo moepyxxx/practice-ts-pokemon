@@ -1,4 +1,3 @@
-import { Hero } from '../model/human/Hero';
 import { Achamo } from '../model/pokemon/Achamo';
 import { ExceptPokemon } from '../model/pokemon/ExceptPokemon';
 import { OwnPokemon } from '../model/pokemon/OwnPokemon';
@@ -91,7 +90,14 @@ export class EventController {
         MainController.getInstance().renderSerif(`${MainController.getInstance()._hero.name}は、${achamo.pokemon.name}に決めた`);
 
         const pochiena = new ExceptPokemon(new Pochiena(), 2);
-        const initialBattleController = new PokemonBattleController(pochiena);
+        const battleController = new PokemonBattleController(pochiena);
+        console.log(battleController._onBattle.basicTotalStatus);
+        console.log(battleController._onBattle._battleStatusRank);
+        console.log(battleController._enemy.basicTotalStatus);
+        console.log(battleController._enemy._battleStatusRank);
+        battleController.setBattleAction('たたかう', battleController._onBattle._moveList[0]);
+        battleController.setBattleAction('たたかう', battleController._onBattle._moveList[1]);
+        battleController.setBattleAction('たたかう', battleController._onBattle._moveList[2]);
         break;
     }
     return result;
