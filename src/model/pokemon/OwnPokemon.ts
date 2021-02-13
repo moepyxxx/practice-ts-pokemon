@@ -1,3 +1,4 @@
+import { Pokemon } from "./Pokemon";
 import { ExceptPokemon } from "./ExceptPokemon";
 import { ILebel } from '../../utils/interface/ILebel';
 import { IStatus } from '../../utils/interface/IStatus';
@@ -13,7 +14,7 @@ export class OwnPokemon　implements ILebel, IStatus, IMoveList, IPokemonBattle 
   /**
    * ポケモン
    */
-  protected _pokemon: ExceptPokemon;
+  protected _pokemon: Pokemon;
 
   /**
    * ニックネーム
@@ -68,7 +69,7 @@ export class OwnPokemon　implements ILebel, IStatus, IMoveList, IPokemonBattle 
     this._encounter = encounterField;
 
     /** ステータス等をExceptPokemonクラスから引き継ぎ */
-    this._pokemon = pokemon;
+    this._pokemon = pokemon.pokemon;
     this._lebel = pokemon.lebel;
     this._basicPokemonStatus = pokemon._basicPokemonStatus;
     this._basicIndividualStatus = pokemon._basicIndividualStatus;

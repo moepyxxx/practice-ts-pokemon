@@ -194,7 +194,7 @@ export class PokemonBattleController {
 
 
       damage = this.calculateDamage(
-        moveActionSet.attack.pokemon.lebel,
+        moveActionSet.attack._lebel,
         atk,
         def,
         <number>moveActionSet.move.power,
