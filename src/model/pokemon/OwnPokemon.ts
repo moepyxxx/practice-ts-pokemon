@@ -57,7 +57,7 @@ export class OwnPokemon　implements ILebel, IStatus, IMoveList, IPokemonBattle 
   /**
    * 状態異常
    */
-  _statusAilment: StatusAilment[];
+  _statusAilment: StatusAilment;
 
   /**
    * バトルステータスランク

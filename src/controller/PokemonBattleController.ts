@@ -128,7 +128,7 @@ export class PokemonBattleController {
    * 瀕死状態か確認
    */
   checkPokemonSaFainting(battlePokemon: OwnPokemon | ExceptPokemon): boolean {
-    if (battlePokemon._statusAilment?._name === 'ひんし') {
+    if (battlePokemon._statusAilment?.name === 'ひんし') {
       return true;
     }
     return false;
@@ -143,7 +143,7 @@ export class PokemonBattleController {
     let damage = 0;
 
     // タイプ相性を計算
-    const groupCompMessage:string | null = this.checkGroupCompMessage(moveActionSet.move.type, moveActionSet.defense.pokemon._groups);
+    const groupCompMessage:string | null = this.checkGroupCompMessage(moveActionSet.move.type, moveActionSet.defense.pokemon.groups);
 
     // 技種類の分岐
     let atk, def = 0;

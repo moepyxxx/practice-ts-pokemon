@@ -10,7 +10,7 @@ export interface IPokemonBattle {
   /**
    * 状態異常
    */
-  _statusAilment: StatusAilment[];
+  _statusAilment: StatusAilment;
 
   /**
    * バトルステータスランク
