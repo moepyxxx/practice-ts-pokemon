@@ -93,6 +93,10 @@ export class ExceptPokemon implements ILebel, IStatus, IMoveList, IPokemonBattle
   get moveList() {
     return this._moveList;
   }
+  
+  get basicTotalStatus() {
+    return this._basicTotalStatus;
+  }
 
   /**
    * ステータスの計算

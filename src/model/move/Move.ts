@@ -1,5 +1,6 @@
 import { Group } from '../group/Group';
-import { Pokemon } from '../pokemon/Pokemon';
+import { ExceptPokemon } from '../pokemon/ExceptPokemon';
+import { OwnPokemon } from '../pokemon/OwnPokemon';
 
 export abstract class Move {
 
@@ -51,7 +52,7 @@ export abstract class Move {
   /**
    * 追加効果
    */
-  effects(...pokemons: Pokemon[]): string {
+  effects(...pokemons: (ExceptPokemon | OwnPokemon)[]): string {
     return '';
   }
 

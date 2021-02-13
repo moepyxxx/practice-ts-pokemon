@@ -85,6 +85,10 @@ export class OwnPokemon　implements ILebel, IStatus, IMoveList, IPokemonBattle 
     return this._pokemon;
   }
 
+  get basicTotalStatus() {
+    return this._basicTotalStatus;
+  }
+
   /**
    * ステータスの計算
    */
