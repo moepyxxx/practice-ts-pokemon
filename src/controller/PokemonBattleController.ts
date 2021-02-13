@@ -4,6 +4,7 @@ import { Hero } from "../model/human/Hero";
 import { Move } from "../model/move/Move";
 import { ExceptPokemon } from "../model/pokemon/ExceptPokemon";
 import { OwnPokemon } from '../model/pokemon/OwnPokemon';
+import { TBattleStatusRank } from "../utils/type/TBattleStatusRank";
 import { TMoveActionSet } from "../utils/type/TMoveActionSet";
 
 export class PokemonBattleController {
@@ -85,11 +86,8 @@ export class PokemonBattleController {
       move: enemyMove
     };
 
-
     const actionPokemons: TMoveActionSet[] = [onBattleMoveList, enemyMoveList];
-    console.log(actionPokemons);
     const checkedMoveOrderPokemons = this.checkMoveOrder(actionPokemons);
-    console.log(checkedMoveOrderPokemons);
 
     this.actionExecute(checkedMoveOrderPokemons);
   }
@@ -244,7 +242,13 @@ export class PokemonBattleController {
     }
 
     if (moveActionSet.move.species === '変化') {
-      const resultMsg = moveActionSet.move.effects(moveActionSet.attack, moveActionSet.defense);
+      const effect = moveActionSet.move.confirmEffect(moveActionSet.attack, moveActionSet.defense);
+      // const effect = {
+      //   target: ~~,    // ターゲットポケモン
+      //   addOrSub: ~~,  // どうするか
+      //   number: ~~     // どれくらいするか
+      // }
+      const resultMsg = moveActionSet.move.getEffectsMessage(moveActionSet.attack, moveActionSet.defense);
       this.renderSerif(resultMsg);
       return damage;
     } else {
@@ -281,6 +285,64 @@ export class PokemonBattleController {
       this.damageCorrection = 1;
       return damage;
     }
+  }
+
+    /**
+   * バトルステータスランクの加算・減算
+   */
+  changeBattleStatusRank(target: ExceptPokemon | OwnPokemon, key: keyof TBattleStatusRank, effect: 'add' | 'sub', number: number) {
+    const statusName: {
+      [key: string]: string
+    } = {
+      'attack': 'こうげき',
+      'protected': 'ぼうぎょ',
+      'SPattack': 'とくこう',
+      'SPprotected': 'とくぼう',
+      'rapidity': 'すばやさ',
+      'critical': '急所のあたりやすさ',
+      'accuracy': 'めいちゅうりつ',
+      'evasion': 'かいひりつ',
+    };
+
+    let message: {
+      [key: string]: string
+    };
+    if (effect === 'add') {
+      message = {
+        '1': 'あがった',
+        '2': 'ぐーんとあがった',
+        '3': 'ぐぐーんとあがった',
+        '12': '最大まであがった'
+      };
+    } else {
+      message= {
+        '1': 'さがった',
+        '2': 'がくっとさがった',
+        '3': 'がくーんとさがった',
+        '12': '最大までさがった'
+      };
+    }
+
+    if (target._battleStatusRank[key] === 6) {
+      return `${target.pokemon.name}の${statusName[key]}はもう上がらない`;
+    }
+    if (target._battleStatusRank[key] === -6) {
+      return `${target.pokemon.name}の${statusName[key]}はもうさがらない`;
+    }
+
+    if (effect === 'add') {
+      target._battleStatusRank[key] += number;
+    } else {
+      target._battleStatusRank[key] -= number;
+    }
+
+    if (target._battleStatusRank[key] > 6) {
+      target._battleStatusRank[key] = 6;
+    }
+    if (target._battleStatusRank[key] < -6) {
+      target._battleStatusRank[key] = -6;
+    }
+    return `${target.pokemon.name}の${statusName[key]}が${message[number.toString()]}`;
   }
 
   /**
