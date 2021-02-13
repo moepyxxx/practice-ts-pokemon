@@ -44,9 +44,29 @@ export class PokemonBattleController {
    * アクションの実装
    */
   setBattleAction(action: 'にげる' | 'たたかう', onBattleMove?: Move) {
+
+    // どちらかがひんしであればバトルは続けない
+    const isSaFainging = [this._onBattle, this._enemy].some(pokemon => pokemon._statusAilment?.name === 'ひんし');
+    if (isSaFainging) {
+      this.renderSerif('どっちかのポケモンがひんしだよ！バトルできないよ');
+    }
+
     const enemyMove: Move = this.autoSelectMove(this._enemy);
     if (action === 'にげる') {
-      // [todo]: 逃げるアクションはのちほど実装
+
+      if (this.checkRun()) {
+        this.renderSerif(`${this._enemy.name}からにげることができた`);
+      } else {
+        this._runCount++;
+        this.renderSerif(`${this._enemy.name}からにげられなかった`);
+
+        const enemyMoveData: TMoveActionSet = {
+          attack: this._enemy,
+          defense: this._onBattle,
+          move: enemyMove
+        }
+        this.actionExecute([enemyMoveData]);
+      }
     }
 
     if (!onBattleMove) {
@@ -68,6 +88,22 @@ export class PokemonBattleController {
     const checkedMoveOrderPokemons = this.checkMoveOrder(actionPokemons);
 
     this.actionExecute(checkedMoveOrderPokemons);
+  }
+
+  /**
+   * 逃げられるか判定
+   */
+  checkRun(): boolean {
+    const attackRapidity = this._onBattle.calculateBasicStatus().rapidity;
+    const defenseRapidity = this._enemy.calculateBasicStatus().rapidity;
+    const calculateBasicStatus = ((attackRapidity * 128 / defenseRapidity) + 30 * this._runCount) / 256;
+    const randamNumber = Math.random();
+
+    if (calculateBasicStatus >= randamNumber) {
+      return true;      
+    } else {
+      return false;
+    }
   }
 
   /**
