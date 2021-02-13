@@ -2,8 +2,6 @@ import { Human } from './Human';
 import { OwnPokemon } from '../pokemon/OwnPokemon';
 import { IOnHandPokemons } from '../../utils/interface/IOnHandPokemons';
 import { THeroStatus } from '../../utils/type/THeroStatus';
-import { Ordinary } from './Ordinary';
-import { Trainer } from './Trainer';
 
 export class Hero extends Human implements IOnHandPokemons {
   
@@ -48,7 +46,7 @@ export class Hero extends Human implements IOnHandPokemons {
   }
 
   getNewPokemon(pokemon: OwnPokemon) {
-    if (this._onHandPokemons.length > 6) {
+    if (this._onHandPokemons.length < 6) {
       this._onHandPokemons.push(pokemon);
     }
     this._haveAllPokemons.push(pokemon);
