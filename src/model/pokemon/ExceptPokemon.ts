@@ -49,7 +49,7 @@ export class ExceptPokemon implements ILebel, IStatus, IMoveList, IPokemonBattle
   /**
    * 状態異常
    */
-  _statusAilment: StatusAilment | null;
+  _statusAilment: StatusAilment | null = null;
 
   /**
    * バトルステータスランク
