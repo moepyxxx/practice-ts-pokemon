@@ -1,3 +1,4 @@
+import { STATUS_AILMENT_CLASS_LIST } from "../model/classdata/statusAilmentDatas";
 import { Group } from "../model/group/Group";
 import { Hero } from "../model/human/Hero";
 import { Move } from "../model/move/Move";
@@ -114,7 +115,7 @@ export class PokemonBattleController {
 
     moveActionSet.forEach((moveAction) => {
       const damage = this.checkMoveActionEffect(moveAction);
-      moveAction.defense.calculateRemainingHp('sub', damage);
+      this.calculateRemainingHp(moveAction.defense, 'sub', damage);
 
       if (this.checkPokemonSaFainting(moveAction.defense)) {
         this.renderSerif(`${moveAction.defense.pokemon.name}はたおれた。hpがゼロになったので、バトルが終了した！`);
@@ -122,6 +123,35 @@ export class PokemonBattleController {
     });
     moveActionSet.splice(0);
 
+  }
+
+  /**
+   * 残りhpの計算
+   */
+  calculateRemainingHp(target: OwnPokemon | ExceptPokemon, effect: 'saFainting' | 'sub' | 'add' | 'reset', number: number): number {
+    switch (effect) {
+      case 'add':
+        target._remainingHp += number;
+        break;
+      case 'sub':
+        target._remainingHp -= number;
+        break;
+      case 'reset':
+        target._remainingHp = target.basicTotalStatus.hp;
+        target._statusAilment = null;
+        break;
+      case 'saFainting':
+        target._remainingHp = 0;
+        target._remainingHp = target._remainingHp > target.basicTotalStatus.hp 
+          ? target.basicTotalStatus.hp
+          : target._remainingHp;
+    }
+
+    if (target._remainingHp <= 0) {
+      target._statusAilment = STATUS_AILMENT_CLASS_LIST.saFainting;
+      target._remainingHp = 0;
+    }
+    return target._remainingHp;
   }
 
   /**
