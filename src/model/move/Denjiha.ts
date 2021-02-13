@@ -1,8 +1,9 @@
 import { Move } from './Move';
 import { Group } from '../group/Group';
-import { Pokemon } from '../pokemon/Pokemon';
 import { GROUP_CLASS_LIST } from '../classdata/groupClassDatas';
 import { STATUS_AILMENT_CLASS_LIST } from '../classdata/statusAilmentDatas';
+import { OwnPokemon } from '../pokemon/OwnPokemon';
+import { ExceptPokemon } from '../pokemon/ExceptPokemon';
 
 export class Denjiha extends Move {
 
@@ -51,7 +52,7 @@ export class Denjiha extends Move {
    */
   _criticalRank = 0;
 
-  effects(...pokemons: Pokemon[]): string {
+  effects(...pokemons: (OwnPokemon | ExceptPokemon)[]): string {
 
     // [todo]のちほど実装
     // const [atkPokemon, defPokemon] = pokemons;
