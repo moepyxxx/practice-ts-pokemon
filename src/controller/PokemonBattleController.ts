@@ -113,7 +113,8 @@ export class PokemonBattleController {
    * ポケモンが自動でわざを選択
    */
   autoSelectMove(pokemon: ExceptPokemon): Move {
-    const randomNumber: number = Math.floor(Math.random() * 3);
+    const moveNumber = pokemon.moveList.length;
+    const randomNumber: number = Math.floor(Math.random() * moveNumber);
     return pokemon.moveList[randomNumber];
   }
 
