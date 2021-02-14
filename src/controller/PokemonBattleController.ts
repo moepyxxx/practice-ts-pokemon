@@ -34,13 +34,23 @@ export class PokemonBattleController {
   /**
    * ダメージ補正値
    */
-  protected damageCorrection: number = 1;
+  private damageCorrection: number = 1;
+
+  /**
+   * バトル中か否か
+   */
+  private _isBattle: boolean;
 
   constructor(enemyPokemon: ExceptPokemon) {
+    this._isBattle = true;
     this._hero = Hero.getInstance();
     this._onBattle = this._hero._onHandPokemons[0];
     this._enemy = enemyPokemon;
     this.renderSerif(`${this._enemy.pokemon.name}があらわれた。いけ、${this._onBattle.pokemon.name}！`)
+  }
+
+  get isBattle() {
+    return this._isBattle;
   }
 
   /**
@@ -48,9 +58,7 @@ export class PokemonBattleController {
    */
   setBattleAction(action: 'にげる' | 'たたかう', onBattleMove?: Move) {
 
-    // どちらかがひんしであればバトルは続けない
-    const isSaFainging = [this._onBattle, this._enemy].some(pokemon => pokemon._statusAilment?.name === 'ひんし');
-    if (isSaFainging) {
+    if (!this._isBattle) {
       this.renderSerif('どっちかのポケモンがひんしだよ！バトルできないよ');
       return;
     }
@@ -161,6 +169,7 @@ export class PokemonBattleController {
 
       if (this.checkPokemonSaFainting(moveAction.defense)) {
         this.renderSerif(`${moveAction.defense.pokemon.name}はたおれた。hpがゼロになったので、バトルが終了した！`);
+        this._isBattle = false;
         return true;
       }
     });
@@ -250,7 +259,7 @@ export class PokemonBattleController {
       if (effect === null) {
         return damage;
       }
-      
+
       if (effect.change === 'statusAilment') {
         const status = effect.status ? effect.status : null;
         if (status !== null) {
