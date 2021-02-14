@@ -49,7 +49,7 @@ export class ExceptPokemon implements ILebel, IStatus, IMoveList, IPokemonBattle
   /**
    * 状態異常
    */
-  _statusAilment: StatusAilment[] = [];
+  _statusAilment: StatusAilment | null = null;
 
   /**
    * バトルステータスランク
@@ -92,6 +92,10 @@ export class ExceptPokemon implements ILebel, IStatus, IMoveList, IPokemonBattle
 
   get moveList() {
     return this._moveList;
+  }
+  
+  get basicTotalStatus() {
+    return this._basicTotalStatus;
   }
 
   /**

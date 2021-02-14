@@ -1,5 +1,7 @@
+import { TChangeEffext } from '../../utils/type/TChangeEffect';
 import { Group } from '../group/Group';
-import { Pokemon } from '../pokemon/Pokemon';
+import { ExceptPokemon } from '../pokemon/ExceptPokemon';
+import { OwnPokemon } from '../pokemon/OwnPokemon';
 
 export abstract class Move {
 
@@ -48,14 +50,6 @@ export abstract class Move {
    */
   abstract _criticalRank: number | null;
 
-  /**
-   * 追加効果
-   */
-  effects(...pokemons: Pokemon[]): string {
-    return '';
-  }
-
-
   get name() {
     return this._name;
   }
@@ -90,6 +84,10 @@ export abstract class Move {
 
   get criticalRank() {
     return this._criticalRank;
+  }
+
+  getEffect(attack: OwnPokemon | ExceptPokemon, defense: OwnPokemon | ExceptPokemon): TChangeEffext | null {
+    return null;
   }
 
 }

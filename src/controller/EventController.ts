@@ -1,9 +1,10 @@
-import { Hero } from '../model/human/Hero';
 import { Achamo } from '../model/pokemon/Achamo';
 import { ExceptPokemon } from '../model/pokemon/ExceptPokemon';
 import { OwnPokemon } from '../model/pokemon/OwnPokemon';
+import { Pochiena } from '../model/pokemon/Pochiena';
 import { TEventHuman } from '../utils/type/TEventHuman';
 import { MainController } from './MainController';
+import { PokemonBattleController } from './PokemonBattleController';
 
 export class EventController {
   public static _instance: EventController;
@@ -87,6 +88,19 @@ export class EventController {
         const achamo = new OwnPokemon(eAchamo, MainController.getInstance()._field.name);
         MainController.getInstance()._hero.getNewPokemon(achamo);
         MainController.getInstance().renderSerif(`${MainController.getInstance()._hero.name}は、${achamo.pokemon.name}に決めた`);
+
+        const pochiena = new ExceptPokemon(new Pochiena(), 2);
+        const battleController = new PokemonBattleController(pochiena);
+        battleController.setBattleAction('たたかう', battleController._onBattle._moveList[0]);
+        battleController.setBattleAction('たたかう', battleController._onBattle._moveList[0]);
+        battleController.setBattleAction('たたかう', battleController._onBattle._moveList[0]);
+        battleController.setBattleAction('たたかう', battleController._onBattle._moveList[0]);
+        battleController.setBattleAction('たたかう', battleController._onBattle._moveList[0]);
+        battleController.setBattleAction('たたかう', battleController._onBattle._moveList[0]);
+        console.log(battleController._onBattle.basicTotalStatus);
+        console.log(battleController._onBattle._battleStatusRank);
+        console.log(battleController._enemy.basicTotalStatus);
+        console.log(battleController._enemy._battleStatusRank);
         break;
     }
     return result;

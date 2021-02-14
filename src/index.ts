@@ -33,10 +33,10 @@ const rival = new Trainer('ユウタ', '男');
 
 const pochiena: Pokemon = POKEMON_CLASS_LIST.pochiena;
 const kusamuraWildPokemons: TWildPokemons[] = [{
-  trigger: 'イベント',
+  trigger: 'すすむ',
   pokemon: pochiena,
   appearingRate: 1,
-  lebelRange: [2]
+  lebelRange: [2, 3]
 }];
 
 const heroHouse = new House('自分の家', [ mother ]);

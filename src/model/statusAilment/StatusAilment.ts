@@ -29,4 +29,19 @@ export abstract class StatusAilment {
     return this._name;
   }
 
+  get sickedMessage() {
+    return this._sickedMessage;
+  }
+  get alreadySickedMessage() {
+    return this._alreadySickedMessage;
+  }
+
+  get sickedTurnMessage() {
+    return this._sickedTurnMessage;
+  }
+
+  get sickedRecoceryMessage() {
+    return this._sickedRecoceryMessage;
+  }
+
 }
