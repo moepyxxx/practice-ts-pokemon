@@ -86,4 +86,8 @@ export abstract class Move {
     return this._criticalRank;
   }
 
+  getEffect(attack: OwnPokemon | ExceptPokemon, defense: OwnPokemon | ExceptPokemon): TChangeEffext | null {
+    return null;
+  }
+
 }

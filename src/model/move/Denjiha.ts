@@ -4,6 +4,7 @@ import { GROUP_CLASS_LIST } from '../classdata/groupClassDatas';
 import { STATUS_AILMENT_CLASS_LIST } from '../classdata/statusAilmentDatas';
 import { OwnPokemon } from '../pokemon/OwnPokemon';
 import { ExceptPokemon } from '../pokemon/ExceptPokemon';
+import { TChangeEffext } from '../../utils/type/TChangeEffect';
 
 export class Denjiha extends Move {
 
@@ -52,10 +53,10 @@ export class Denjiha extends Move {
    */
   _criticalRank = 0;
 
-  getEffect(attack: OwnPokemon | ExceptPokemon, defense: OwnPokemon | ExceptPokemon) {
+  getEffect(attack: OwnPokemon | ExceptPokemon, defense: OwnPokemon | ExceptPokemon): TChangeEffext | null {
     return {
       target: defense,
-      effect: 'statusAilment',
+      change: 'statusAilment',
       status: STATUS_AILMENT_CLASS_LIST.saParalysis
     }
   }

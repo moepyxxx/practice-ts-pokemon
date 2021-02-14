@@ -244,8 +244,13 @@ export class PokemonBattleController {
     }
 
     if (moveActionSet.move.species === '変化') {
-      const effect: TChangeEffext = moveActionSet.move.getEffect(moveActionSet.attack, moveActionSet.defense);
+      const effect: TChangeEffext | null = moveActionSet.move.getEffect(moveActionSet.attack, moveActionSet.defense);
       let resultMessage;
+
+      if (effect === null) {
+        return damage;
+      }
+      
       if (effect.change === 'statusAilment') {
         const status = effect.status ? effect.status : null;
         if (status !== null) {

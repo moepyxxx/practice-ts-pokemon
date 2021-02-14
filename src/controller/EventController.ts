@@ -91,15 +91,16 @@ export class EventController {
 
         const pochiena = new ExceptPokemon(new Pochiena(), 2);
         const battleController = new PokemonBattleController(pochiena);
+        battleController.setBattleAction('たたかう', battleController._onBattle._moveList[0]);
+        battleController.setBattleAction('たたかう', battleController._onBattle._moveList[0]);
+        battleController.setBattleAction('たたかう', battleController._onBattle._moveList[0]);
+        battleController.setBattleAction('たたかう', battleController._onBattle._moveList[0]);
+        battleController.setBattleAction('たたかう', battleController._onBattle._moveList[0]);
+        battleController.setBattleAction('たたかう', battleController._onBattle._moveList[0]);
         console.log(battleController._onBattle.basicTotalStatus);
         console.log(battleController._onBattle._battleStatusRank);
         console.log(battleController._enemy.basicTotalStatus);
         console.log(battleController._enemy._battleStatusRank);
-        battleController.setBattleAction('たたかう', battleController._onBattle._moveList[0]);
-        battleController.setBattleAction('たたかう', battleController._onBattle._moveList[1]);
-        battleController.setBattleAction('たたかう', battleController._onBattle._moveList[2]);
-        battleController.setBattleAction('たたかう', battleController._onBattle._moveList[0]);
-        battleController.setBattleAction('たたかう', battleController._onBattle._moveList[2]);
         break;
     }
     return result;
