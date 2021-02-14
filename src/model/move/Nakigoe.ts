@@ -52,13 +52,13 @@ export class Nakigoe extends Move {
    */
   _criticalRank = 0;
 
-  effects(...pokemons: (OwnPokemon | ExceptPokemon)[]): string {
-
-    // [todo]のちほど実装
-    // const [atkPokemon, defPokemon] = pokemons;
-    // const resultMessage: string = defPokemon.subBattleStatusRank('attack', 1);
-    // return resultMessage;
-    return 'hoge';
-
+  getEffect(attack: OwnPokemon | ExceptPokemon, defense: OwnPokemon | ExceptPokemon) {
+    return {
+      target: defense,
+      change: 'sub',
+      battleRank: 'attack',
+      degree: 1
+    }
   }
+
 }

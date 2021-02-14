@@ -1,3 +1,4 @@
+import { TChangeEffext } from '../../utils/type/TChangeEffect';
 import { Group } from '../group/Group';
 import { ExceptPokemon } from '../pokemon/ExceptPokemon';
 import { OwnPokemon } from '../pokemon/OwnPokemon';
@@ -48,14 +49,6 @@ export abstract class Move {
    * 急所に当たりやすいランク
    */
   abstract _criticalRank: number | null;
-
-  /**
-   * 追加効果
-   */
-  effects(...pokemons: (ExceptPokemon | OwnPokemon)[]): string {
-    return '';
-  }
-
 
   get name() {
     return this._name;
