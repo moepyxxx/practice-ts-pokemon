@@ -31,10 +31,14 @@ const mother = new Ordinary('お母さん', '女');
 const odamakiHakase = new Ordinary('オダマキ博士', '男');
 const rival = new Trainer('ユウタ', '男');
 
-const pochiena: Pokemon = POKEMON_CLASS_LIST.pochiena;
 const kusamuraWildPokemons: TWildPokemons[] = [{
   trigger: 'すすむ',
-  pokemon: pochiena,
+  pokemon: POKEMON_CLASS_LIST.pochiena,
+  appearingRate: 1,
+  lebelRange: [2, 3]
+},{
+  trigger: 'すすむ',
+  pokemon: POKEMON_CLASS_LIST.ziguzaguma,
   appearingRate: 1,
   lebelRange: [2, 3]
 }];
@@ -90,3 +94,9 @@ console.log('# イベント発生：eventController.events("1-3");');
 MainController.getInstance().field = mishiroTown;
 MainController.getInstance().place = kenkyujo;
 eventController.events('1-3');
+
+console.log('-------------------------');
+console.log('# 103番道路の草むらへ移動');
+mainController.field = douro103;
+mainController.place = kusamura103;
+console.log(kusamura103._wildPokemons);
