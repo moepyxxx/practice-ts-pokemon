@@ -170,11 +170,19 @@ export class PokemonBattleController {
       if (this.checkPokemonSaFainting(moveAction.defense)) {
         this.renderSerif(`${moveAction.defense.pokemon.name}はたおれた。hpがゼロになったので、バトルが終了した！`);
         this._isBattle = false;
+        this.resetBattleStatusRank(this._onBattle);
         return true;
       }
     });
     moveActionSet.splice(0);
 
+  }
+
+  /**
+   * バトルステータスランクをリセット
+   */
+  resetBattleStatusRank(pokemon: OwnPokemon) {
+    Object.values(pokemon._battleStatusRank).forEach(value => value = 0);
   }
 
   /**
