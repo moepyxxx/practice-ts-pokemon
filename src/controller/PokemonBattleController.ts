@@ -5,6 +5,7 @@ import { Move } from "../model/move/Move";
 import { ExceptPokemon } from "../model/pokemon/ExceptPokemon";
 import { OwnPokemon } from '../model/pokemon/OwnPokemon';
 import { TBattleStatusRank } from "../utils/type/TBattleStatusRank";
+import { TChangeEffext } from "../utils/type/TChangeEffect";
 import { TMoveActionSet } from "../utils/type/TMoveActionSet";
 
 export class PokemonBattleController {
@@ -242,14 +243,33 @@ export class PokemonBattleController {
     }
 
     if (moveActionSet.move.species === '変化') {
-      const effect = moveActionSet.move.confirmEffect(moveActionSet.attack, moveActionSet.defense);
+      const effect: TChangeEffext = moveActionSet.move.getEffect(moveActionSet.attack, moveActionSet.defense);
+      let resultMessage;
+      if (effect.change === 'statusAilment') {
+        const status = effect.status ? effect.status : null;
+        if (status !== null) {
+          resultMessage = this.setStatusAilment(effect.target, status);
+        }
+      }
+
+      if (effect.change === 'add' || effect.change === 'sub') {
+        const battleRank = effect.battleRank ?? null;
+        const degree = effect.degree ?? null;
+        if (battleRank !== null && degree !== null) {
+          resultMessage = this.changeBattleStatusRank(effect.target, battleRank, effect.change, degree);
+        }
+      }
+
+      if (resultMessage) {
+        this.renderSerif(resultMessage);
+      }
       // const effect = {
       //   target: ~~,    // ターゲットポケモン
-      //   addOrSub: ~~,  // どうするか
-      //   number: ~~     // どれくらいするか
+      //   change: ~~,    // どうするか
+      //   status: ~~,    // どのステータスにするか？もしくは回復するか
+      //   degree: ~~     // どれくらいするか
       // }
-      const resultMsg = moveActionSet.move.getEffectsMessage(moveActionSet.attack, moveActionSet.defense);
-      this.renderSerif(resultMsg);
+      // const resultMsg = moveActionSet.move.getEffectsMessage(moveActionSet.attack, moveActionSet.defense);
       return damage;
     } else {
       this.renderSerif(groupCompMessage);
