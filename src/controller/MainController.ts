@@ -43,10 +43,12 @@ export class MainController {
 
   set field(field: MapField) {
     this._field = field;
+    console.log(`${this._field.name}に移動した`);
   }
 
   set place(place: Place) {
     this._place = place;
+    console.log(`${this._place._name}に移動した`);
   }
 
   heroWalk(place?: Place) {

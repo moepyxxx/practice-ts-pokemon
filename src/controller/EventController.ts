@@ -70,16 +70,16 @@ export class EventController {
    */
   public events(eventKey: string): {} | null{ 
     let result = null;
+    const mother = this._humans?.find(human => human.key === 'mama');
+    const hakase = this._humans?.find(human => human.key === 'hakase');
     switch(eventKey) {
       case '1-1':
-        const mother = this._humans?.find(human => human.key === 'mama');
         if (mother?.human) {
           const talk = mother.human.talk('102番道路へ行くお願いをする');
           MainController.getInstance().renderSerif(talk);
         };
         break;
       case '1-2':
-        const hakase = this._humans?.find(human => human.key === 'hakase');
         if (hakase?.human) {
           const talk = hakase.human.talk('野生のポケモンに襲われている博士が助けを求める');
           MainController.getInstance().renderSerif(talk);
@@ -96,6 +96,16 @@ export class EventController {
           battleController.setBattleAction('たたかう', battleController._onBattle._moveList[0]);
         }
 
+        if (hakase?.human) {
+          const talk = hakase.human.talk('博士にお礼を言われる');
+          MainController.getInstance().renderSerif(talk);
+        }
+        break;
+      case '1-3':
+        if (hakase?.human) {
+          const talk = hakase.human.talk('博士からお礼と旅出発の応援をもらう');
+          MainController.getInstance().renderSerif(talk);
+        }
         break;
     }
     return result;
