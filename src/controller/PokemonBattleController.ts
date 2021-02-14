@@ -4,6 +4,7 @@ import { Hero } from "../model/human/Hero";
 import { Move } from "../model/move/Move";
 import { ExceptPokemon } from "../model/pokemon/ExceptPokemon";
 import { OwnPokemon } from '../model/pokemon/OwnPokemon';
+import { StatusAilment } from "../model/statusAilment/StatusAilment";
 import { TBattleStatusRank } from "../utils/type/TBattleStatusRank";
 import { TChangeEffext } from "../utils/type/TChangeEffect";
 import { TMoveActionSet } from "../utils/type/TMoveActionSet";
@@ -263,13 +264,6 @@ export class PokemonBattleController {
       if (resultMessage) {
         this.renderSerif(resultMessage);
       }
-      // const effect = {
-      //   target: ~~,    // ターゲットポケモン
-      //   change: ~~,    // どうするか
-      //   status: ~~,    // どのステータスにするか？もしくは回復するか
-      //   degree: ~~     // どれくらいするか
-      // }
-      // const resultMsg = moveActionSet.move.getEffectsMessage(moveActionSet.attack, moveActionSet.defense);
       return damage;
     } else {
       this.renderSerif(groupCompMessage);
@@ -307,10 +301,47 @@ export class PokemonBattleController {
     }
   }
 
-    /**
+  /**
+   * 状態異常の変化
+   */
+  setStatusAilment(target: ExceptPokemon | OwnPokemon, status: StatusAilment): string {
+    const targetAlreadyStatusAilment = target._statusAilment;
+
+    // 状態異常がないのに、状態異常回復をしようとした
+    if (targetAlreadyStatusAilment === null && status === null) {
+      return 'しかし、うまくきまらなかった';
+    }
+
+    // すでに起こっている状態異常になった
+    if (targetAlreadyStatusAilment === status && status !== null) {
+      return targetAlreadyStatusAilment.alreadySickedMessage;
+    }
+
+    // すでに何らかの状態異常にもかかわらず、別の状態以上を指定した
+    if (targetAlreadyStatusAilment !== null &&  status !== null) {
+      return 'しかし、うまくきまらなかった'; 
+    }
+
+    // 状態異常をnullに変更した
+    if (targetAlreadyStatusAilment !== null && status === null) {
+      target._statusAilment = status;
+      return targetAlreadyStatusAilment.sickedRecoceryMessage;
+    }
+
+    // ステータスをnullから他の状態異常へ変更した
+    if (targetAlreadyStatusAilment === null && status !== null) {
+      target._statusAilment = status;
+      return status.sickedMessage;
+    }
+
+    // それ以外のパターン
+    return 'しかし、うまくきまらなかった'; 
+  }
+
+  /**
    * バトルステータスランクの加算・減算
    */
-  changeBattleStatusRank(target: ExceptPokemon | OwnPokemon, key: keyof TBattleStatusRank, effect: 'add' | 'sub', number: number) {
+  changeBattleStatusRank(target: ExceptPokemon | OwnPokemon, key: keyof TBattleStatusRank, effect: 'add' | 'sub', number: number): string {
     const statusName: {
       [key: string]: string
     } = {
