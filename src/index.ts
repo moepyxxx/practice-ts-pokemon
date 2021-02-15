@@ -39,7 +39,7 @@ const kusamuraWildPokemons: TWildPokemons[] = [{
 },{
   trigger: 'すすむ',
   pokemon: POKEMON_CLASS_LIST.ziguzaguma,
-  appearingRate: 1,
+  appearingRate: 1.5,
   lebelRange: [2, 3]
 }];
 
@@ -99,4 +99,4 @@ console.log('-------------------------');
 console.log('# 103番道路の草むらへ移動');
 mainController.field = douro103;
 mainController.place = kusamura103;
-console.log(kusamura103._wildPokemons);
+mainController.heroWalk(mainController._place);

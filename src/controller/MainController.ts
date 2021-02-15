@@ -5,8 +5,9 @@ import { Ordinary } from "../model/human/Ordinary";
 import { Trainer } from "../model/human/Trainer";
 import { PokemonAppearPlace } from "../model/field/PokemonAppearPlace";
 import { TWildPokemons } from '../utils/type/TWildPokemons';
-import { POKEMON_CLASS_LIST } from '../model/classdata/pokemonClassData';
 import { ExceptPokemon } from "../model/pokemon/ExceptPokemon";
+import { Pokemon } from "../model/pokemon/Pokemon";
+import { PokemonBattleController } from './PokemonBattleController';
 
 export class MainController {
   public static _instance: MainController;
@@ -52,19 +53,21 @@ export class MainController {
   }
 
   heroWalk(place?: Place) {
-    if (place) {
-      this.place = place;
-      return;
-    }
+    console.log(`${this._hero.name}は${place?._name}のあたりを歩いた`);
+
+    let assignedPokemon;
     if (this._place instanceof PokemonAppearPlace) {
       const wildPokemons: TWildPokemons[] = this._place._wildPokemons;
       const filterWildPokemons: TWildPokemons[] = wildPokemons.filter(pokemon => pokemon.trigger === 'すすむ');
-      const enemyPokemonInfo = this.assignAppearPokemon(filterWildPokemons);
-      const enemyPokemon = new ExceptPokemon(enemyPokemonInfo.pokemon, enemyPokemonInfo.lebel);
-
-      // ここでバトル開始（バトルコントローラー作成）
+      assignedPokemon = this.assignAppearPokemon(filterWildPokemons);
     }
-    return;
+
+    if (!assignedPokemon) {
+      return;
+    }
+
+    const enemy = new ExceptPokemon(assignedPokemon.pokemon, assignedPokemon.lebel);
+    const battleController = new PokemonBattleController(enemy);
   }
 
   heroTalkTo(human: Trainer | Ordinary) {
@@ -72,12 +75,35 @@ export class MainController {
   }
 
   assignAppearPokemon(pokemons: TWildPokemons[]) {
-    // pokemons
-    // ダミーで表示
-    return {
-      pokemon: POKEMON_CLASS_LIST.achamo,
-      lebel: 5
-    };
+ 
+    let allRange = 0;
+    const assignTarget: { pokemon: Pokemon, min: number, max: number, lebelRange: number[] }[] = [];
+    pokemons.forEach((current, index) => {
+      const pokemon = current.pokemon;
+      const lebelRange = current.lebelRange;
+      const min = allRange;
+      const max = allRange + current.appearingRate
+      allRange += current.appearingRate;
+      assignTarget.push({ pokemon, min, max, lebelRange })
+    });
+
+    const randomNum = Math.random() * allRange;
+    const result = assignTarget.find((target) => {
+      return (randomNum > target.min) && (randomNum < target.max);
+    });
+
+    let resultPokemon;
+    let randomLebelNum;
+    let resultLebel;
+    if (result) {
+      resultPokemon = result.pokemon;
+      randomLebelNum = Math.floor(Math.random() * result.lebelRange.length);
+      resultLebel = result.lebelRange[randomLebelNum];
+      return {
+        pokemon: resultPokemon,
+        lebel: resultLebel
+      };
+    }
   }
 
   renderSerif(serif: any): void{
