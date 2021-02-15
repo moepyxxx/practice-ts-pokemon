@@ -133,8 +133,6 @@ export class PokemonBattleController {
   checkMoveOrder(orderTargetMoveActionSet: TMoveActionSet[]): TMoveActionSet[] {
 
     return orderTargetMoveActionSet.sort((next, cur) => {
-
-      console.log(orderTargetMoveActionSet);
       // わざの優先度を確認
       if (next.move._priority !== cur.move._priority) {
         if (next.move._priority < cur.move._priority) return 1;

@@ -7,7 +7,6 @@ import { PokemonAppearPlace } from "../model/field/PokemonAppearPlace";
 import { TWildPokemons } from '../utils/type/TWildPokemons';
 import { ExceptPokemon } from "../model/pokemon/ExceptPokemon";
 import { Pokemon } from "../model/pokemon/Pokemon";
-import { PokemonBattleController } from './PokemonBattleController';
 
 export class MainController {
   public static _instance: MainController;
@@ -52,7 +51,7 @@ export class MainController {
     console.log(`${this._place._name}に移動した`);
   }
 
-  heroWalk(place?: Place) {
+  heroWalk(place?: Place): ExceptPokemon | void {
     console.log(`${this._hero.name}は${place?._name}のあたりを歩いた`);
 
     let assignedPokemon;
@@ -67,7 +66,7 @@ export class MainController {
     }
 
     const enemy = new ExceptPokemon(assignedPokemon.pokemon, assignedPokemon.lebel);
-    const battleController = new PokemonBattleController(enemy);
+    return enemy;
   }
 
   heroTalkTo(human: Trainer | Ordinary) {

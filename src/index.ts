@@ -13,6 +13,7 @@ import { PokemonAppearPlace } from './model/field/PokemonAppearPlace';
 import { Trainer } from './model/human/Trainer';
 
 import { TWildPokemons } from './utils/type/TWildPokemons';
+import { PokemonBattleController } from './controller/PokemonBattleController';
 
 console.log('# const mainController = MainController.getInstance()');
 const mainController = MainController.getInstance();
@@ -96,7 +97,14 @@ MainController.getInstance().place = kenkyujo;
 eventController.events('1-3');
 
 console.log('-------------------------');
-console.log('# 103番道路の草むらへ移動');
+console.log('# 103番道路の草むらへ移動・野生ポケモン遭遇');
 mainController.field = douro103;
 mainController.place = kusamura103;
-mainController.heroWalk(mainController._place);
+const enemy = mainController.heroWalk(mainController._place);
+if (enemy) {
+  const battleController = new PokemonBattleController(enemy);
+
+  while(battleController.isBattle) {
+    battleController.setBattleAction('たたかう', battleController._onBattle._moveList[0]);
+  }
+}
