@@ -133,8 +133,6 @@ export class PokemonBattleController {
   checkMoveOrder(orderTargetMoveActionSet: TMoveActionSet[]): TMoveActionSet[] {
 
     return orderTargetMoveActionSet.sort((next, cur) => {
-
-      console.log(orderTargetMoveActionSet);
       // わざの優先度を確認
       if (next.move._priority !== cur.move._priority) {
         if (next.move._priority < cur.move._priority) return 1;
@@ -170,11 +168,19 @@ export class PokemonBattleController {
       if (this.checkPokemonSaFainting(moveAction.defense)) {
         this.renderSerif(`${moveAction.defense.pokemon.name}はたおれた。hpがゼロになったので、バトルが終了した！`);
         this._isBattle = false;
+        this.resetBattleStatusRank(this._onBattle);
         return true;
       }
     });
     moveActionSet.splice(0);
 
+  }
+
+  /**
+   * バトルステータスランクをリセット
+   */
+  resetBattleStatusRank(pokemon: OwnPokemon) {
+    Object.values(pokemon._battleStatusRank).forEach(value => value = 0);
   }
 
   /**

@@ -13,6 +13,7 @@ import { PokemonAppearPlace } from './model/field/PokemonAppearPlace';
 import { Trainer } from './model/human/Trainer';
 
 import { TWildPokemons } from './utils/type/TWildPokemons';
+import { PokemonBattleController } from './controller/PokemonBattleController';
 
 console.log('# const mainController = MainController.getInstance()');
 const mainController = MainController.getInstance();
@@ -31,18 +32,23 @@ const mother = new Ordinary('お母さん', '女');
 const odamakiHakase = new Ordinary('オダマキ博士', '男');
 const rival = new Trainer('ユウタ', '男');
 
-const pochiena: Pokemon = POKEMON_CLASS_LIST.pochiena;
 const kusamuraWildPokemons: TWildPokemons[] = [{
   trigger: 'すすむ',
-  pokemon: pochiena,
+  pokemon: POKEMON_CLASS_LIST.pochiena,
   appearingRate: 1,
+  lebelRange: [2, 3]
+},{
+  trigger: 'すすむ',
+  pokemon: POKEMON_CLASS_LIST.ziguzaguma,
+  appearingRate: 1.5,
   lebelRange: [2, 3]
 }];
 
 const heroHouse = new House('自分の家', [ mother ]);
+const kenkyujo = new House('オダマキ博士の研究所', [ odamakiHakase ]);
 
 const kusamura103 = new PokemonAppearPlace('くさむら', [ odamakiHakase ], kusamuraWildPokemons, '草むら');
-const mishiroTown = new MapField('ミシロタウン', [ heroHouse ]);
+const mishiroTown = new MapField('ミシロタウン', [ heroHouse, kenkyujo ]);
 const douro103 = new MapField('103番どうろ', [ kusamura103 ], [ mishiroTown ]);
 mishiroTown.nearField = [ douro103 ];
 
@@ -85,3 +91,20 @@ mainController.renderSerif(`${mainController._hero.name}は${mainController._fie
 console.log('-------------------------');
 console.log('# イベント発生：eventController.events("1-2");');
 eventController.events('1-2');
+console.log('# イベント発生：eventController.events("1-3");');
+MainController.getInstance().field = mishiroTown;
+MainController.getInstance().place = kenkyujo;
+eventController.events('1-3');
+
+console.log('-------------------------');
+console.log('# 103番道路の草むらへ移動・野生ポケモン遭遇');
+mainController.field = douro103;
+mainController.place = kusamura103;
+const enemy = mainController.heroWalk(mainController._place);
+if (enemy) {
+  const battleController = new PokemonBattleController(enemy);
+
+  while(battleController.isBattle) {
+    battleController.setBattleAction('たたかう', battleController._onBattle._moveList[0]);
+  }
+}
