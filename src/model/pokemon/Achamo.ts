@@ -28,9 +28,9 @@ export class Achamo extends Pokemon {
     lebel: number;
     move: Move
   }[] = [
-    {lebel: 1, move: MOVE_CLASS_LIST.hikkaku},
+    // {lebel: 1, move: MOVE_CLASS_LIST.hikkaku},
     {lebel:1, move: MOVE_CLASS_LIST.nakigoe},
-    {lebel:3, move: MOVE_CLASS_LIST.hinoko},
+    // {lebel:3, move: MOVE_CLASS_LIST.hinoko},
     // {lebel:6, move: 'でんこうせっか'},
     // {lebel:9, move: 'ニトロチャージ'},
     // {lebel:12, move: 'みきり'},

@@ -8,6 +8,7 @@ export class RecoverMachine {
   public recoverPokemon(...pokemons: OwnPokemon[]) {
     pokemons.forEach(pokemon => {
       pokemon._remainingHp = pokemon.basicTotalStatus.hp;
+      pokemon._statusAilment = null;
     });
   }
 

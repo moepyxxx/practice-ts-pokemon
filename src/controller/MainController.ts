@@ -105,6 +105,17 @@ export class MainController {
     }
   }
 
+  /**
+   * ゲームオーバー処理
+   */
+  gameOver() {
+    this.renderSerif(`${this._hero.name}には戦えるポケモンがいない。目の前が真っ暗になった`);
+    this._hero._onHandPokemons.forEach(pokemon => {
+      pokemon._remainingHp = pokemon.basicTotalStatus.hp;
+      pokemon._statusAilment = null;
+    });
+  }
+
   renderSerif(serif: any): void{
     console.log(serif);
   }

@@ -117,5 +117,9 @@ console.log('-------------------------');
 console.log('# コトキタウンでポケモンを回復する');
 MainController.getInstance()._field = kotokiTown;
 MainController.getInstance()._place = kotokiPokemonCenter;
+console.log('# const talk = kotokiPokemonCenter.talkJoisanToRecoverPokemon(...mainController._hero._onHandPokemons);');
 const talk = kotokiPokemonCenter.talkJoisanToRecoverPokemon(...mainController._hero._onHandPokemons);
 MainController.getInstance().renderSerif(talk);
+
+console.log('-------------------------');
+console.log('# 手持ちポケモンがすべてひんしになり、目の前が真っ暗になる');
