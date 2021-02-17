@@ -8,6 +8,7 @@ import { StatusAilment } from "../model/statusAilment/StatusAilment";
 import { TBattleStatusRank } from "../utils/type/TBattleStatusRank";
 import { TChangeEffext } from "../utils/type/TChangeEffect";
 import { TMoveActionSet } from "../utils/type/TMoveActionSet";
+import { MainController } from "./MainController";
 
 export class PokemonBattleController {
 
@@ -169,11 +170,34 @@ export class PokemonBattleController {
         this.renderSerif(`${moveAction.defense.pokemon.name}はたおれた。hpがゼロになったので、バトルが終了した！`);
         this._isBattle = false;
         this.resetBattleStatusRank(this._onBattle);
+
+        if (moveAction.defense instanceof ExceptPokemon) {
+          return true;
+        }
+
+        const isBattlablePokemon = this.checkOtherBattlablePokemon();
+        if (isBattlablePokemon) {
+          // [note]: 万が一まだ戦えるポケモンがいた場合、入れ替えor逃げるが選べるよう実装
+          // [todo]: 複数の手持ちポケモンを交換しながら戦えるできるように機能拡張したら実装
+        } else {
+          MainController.getInstance().gameOver();    
+        }
         return true;
       }
     });
     moveActionSet.splice(0);
 
+  }
+
+  /**
+   * 手持ちポケモンの中で戦闘可能なポケモンがいるかを判定
+   * [todo]: たおれたポケモンの他に戦えるポケモンがいればtrueを返す
+   * [note]: １匹のポケモンだけで実装しているので、常にfalseを返している
+   */
+  checkOtherBattlablePokemon() {
+    return this._hero._onHandPokemons.some(pokemon => {
+      return pokemon._remainingHp !== 0
+    });
   }
 
   /**
