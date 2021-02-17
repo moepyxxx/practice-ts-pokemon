@@ -1,0 +1,1 @@
+export type TPlaceClassification = '草むら' | '池' | '深いくさむら' | '洞窟の中' | '海';
