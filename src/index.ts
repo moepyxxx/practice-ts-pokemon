@@ -14,6 +14,7 @@ import { Trainer } from './model/human/Trainer';
 
 import { TWildPokemons } from './utils/type/TWildPokemons';
 import { PokemonBattleController } from './controller/PokemonBattleController';
+import { PokemonCener } from './model/field/PokemonCener';
 
 console.log('# const mainController = MainController.getInstance()');
 const mainController = MainController.getInstance();
@@ -31,7 +32,6 @@ console.log('# 一気に今回の登場人物・フィールド・場所を設�
 const mother = new Ordinary('お母さん', '女');
 const odamakiHakase = new Ordinary('オダマキ博士', '男');
 const rival = new Trainer('ユウタ', '男');
-
 const kusamuraWildPokemons: TWildPokemons[] = [{
   trigger: 'すすむ',
   pokemon: POKEMON_CLASS_LIST.pochiena,
@@ -46,11 +46,15 @@ const kusamuraWildPokemons: TWildPokemons[] = [{
 
 const heroHouse = new House('自分の家', [ mother ]);
 const kenkyujo = new House('オダマキ博士の研究所', [ odamakiHakase ]);
+const kotokiPokemonCenter = new PokemonCener('コトキタウンのポケモンセンター', []);
 
 const kusamura103 = new PokemonAppearPlace('くさむら', [ odamakiHakase ], kusamuraWildPokemons, '草むら');
 const mishiroTown = new MapField('ミシロタウン', [ heroHouse, kenkyujo ]);
 const douro103 = new MapField('103番どうろ', [ kusamura103 ], [ mishiroTown ]);
+const kotokiTown = new MapField('コトキタウン', [ kotokiPokemonCenter ], [ douro103 ]);
 mishiroTown.nearField = [ douro103 ];
+douro103.nearField = [ kotokiTown ];
+
 
 console.log('-------------------------');
 console.log('# イベントクラスを作成');
@@ -108,3 +112,6 @@ if (enemy) {
     battleController.setBattleAction('たたかう', battleController._onBattle._moveList[0]);
   }
 }
+
+console.log('-------------------------');
+console.log('# コトキタウンでポケモンを回復する');
