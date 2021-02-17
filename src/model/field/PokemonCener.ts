@@ -18,9 +18,9 @@ export class PokemonCener extends Place implements IRecoverPokemons {
     super(name, humans);
   }
 
-  talkJoisanToRecoverPokemon(...pokemons: OwnPokemon[]): void {
-    this.joisan.talk(this.joisan._talkKey);
+  talkJoisanToRecoverPokemon(...pokemons: OwnPokemon[]) {
     this.recoverPokemons(...pokemons);
+    return this.joisan.talk(this.joisan._talkKey);
   }
 
   recoverPokemons(...pokemons: OwnPokemon[]): void {

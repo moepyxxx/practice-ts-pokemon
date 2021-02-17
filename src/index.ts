@@ -115,3 +115,7 @@ if (enemy) {
 
 console.log('-------------------------');
 console.log('# コトキタウンでポケモンを回復する');
+MainController.getInstance()._field = kotokiTown;
+MainController.getInstance()._place = kotokiPokemonCenter;
+const talk = kotokiPokemonCenter.talkJoisanToRecoverPokemon(...mainController._hero._onHandPokemons);
+MainController.getInstance().renderSerif(talk);
